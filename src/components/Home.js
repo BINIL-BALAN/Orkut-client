@@ -7,7 +7,7 @@ function Home() {
     <Box sx={{height:'100vh'}}>
        <Stack direction='row' justifyContent='space-between' spacing={.3}>
          <SideBar sx={{height:100}}/>
-         <FeedSection/>
+         <FeedSection page={'Home'}/>
        </Stack>
     </Box>
   )

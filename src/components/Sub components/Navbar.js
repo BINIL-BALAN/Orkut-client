@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import HomeIcon from '@mui/icons-material/Home';
 import { theme } from '../../theme/theme';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import PersonIcon from '@mui/icons-material/Person';
 import MailIcon from '@mui/icons-material/Mail';
 const StyledToolBar = styled(Toolbar)({
   display: "flex",
@@ -41,13 +42,13 @@ const UserBox = styled(Box)(({theme})=>({
 }))
 
 
-function Navbar() {
+function Navbar({page}) {
   return (
 <AppBar position='sticky'>
       <StyledToolBar p={1.5}>
             <Typography sx={{display:{md:'none'}}} variant='h6'>  Orkut</Typography>
           <Stack sx={{display:{xs:'none',sm:'none',md:"flex"},justifyContent:'center',alignItems:'center',fontWeight:'bold'}} direction='row'>
-                  <HomeIcon sx={{marginRight:'5px'}}/>Home
+                  {page === 'Home'?(<HomeIcon sx={{marginRight:'5px'}}/>) : (<PersonIcon sx={{marginRight:'5px'}}/>)}{page}
           </Stack>
           <Search sx={{display:{xs:'none',sm:'block'}}}><InputBase placeholder='search...' /></Search>
 

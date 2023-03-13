@@ -21,12 +21,12 @@ const StyledToolBar = styled(Toolbar)({
 
 function Chat() {
   return (
-    <Box sx={{ height: '100vh' }}>
-      <Stack direction='row'>
+    <Box sx={{ height: '100vh' ,backgroundColor:'#F0F2F5' }}>
+      <Stack  direction='row'>
         <Stack flex={1} direction='column'>
           <SidebarSmall />
         </Stack>
-        <Stack p={2} flex={5} direction='column' sx={{ backgroundColor: "lightblue" }}>
+        <Stack p={2} flex={5} direction='column' sx={{borderRight:'1px solid rgba(0, 0, 0, 0.12)',borderLeft:'1px solid rgba(0, 0, 0, 0.12)'}}>
           <Typography variant='h5' color='primary'>
             Chat
           </Typography>
@@ -37,7 +37,7 @@ function Chat() {
             <Contacts />
           </Box>
         </Stack>
-        <Stack flex={9} direction='column' sx={{ backgroundColor: 'lightpink', height: '100vh' }}>
+        <Stack flex={9} direction='column' sx={{ backgroundColor: '#F0F2F5', height: '100vh' }}>
           <AppBar position='sticky'>
             <StyledToolBar p={1.5}>
               <Typography sx={{ display: { md: 'none' } }} variant='h6'>  Orkut</Typography>
@@ -64,7 +64,7 @@ function Chat() {
             </StyledToolBar>
           </AppBar >
 
-          <Box sx={{ maxHeight: '79vh', backgroundColor: "lightgreen", overflowY: 'scroll', '&::-webkit-scrollbar': { width: '0px' } }}>
+          <Box sx={{ maxHeight: '79vh', overflowY: 'scroll', '&::-webkit-scrollbar': { width: '0px' } }}>
             <SendMsg />
             <ReceiveMsg />
             <SendMsg />
@@ -75,7 +75,7 @@ function Chat() {
             <ReceiveMsg />
             <ReceiveMsg />
           </Box>
-          <AppBar position="fixed"  sx={{ display: 'flex', width: '58.5vw', top: 'auto', bottom: 0,background:'transprent' }}>
+          <AppBar position="fixed"  sx={{ display: 'flex', width: '58.5vw', top: 'auto', bottom: 0 }}>
             <Toolbar>
               <Paper
                 component="form"

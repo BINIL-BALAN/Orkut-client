@@ -7,19 +7,22 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-
+import ProfileCard from './ProfileCard';
+import styled from '@emotion/styled';
+const RightSideBar = styled(Box)({
+  width: '100%',
+  marginTop:'',
+  maxWidth: 360,
+  maxHeight:'84.6vh',
+  overflowY:'scroll' ,
+  '&::-webkit-scrollbar':{width:'0px'}
+})
 function RightBar() {
   return (
-    <Box p={2} flex={2.1} sx={{display:{xs:'none',sm:'block'},backgroundColor:'#F0F2F5'}}>
+    <RightSideBar p={2} flex={2.1} sx={{display:{xs:'none',sm:'block'},backgroundColor:'#F0F2F5'}}>
+      <Box sx={{width:'23vw',marginLeft:'1vw'}}><ProfileCard/></Box >
       <Typography>Suggested for you</Typography>
-      <List sx={{ 
-        width: '100%',
-        marginTop:'4vh',
-        maxWidth: 360,
-        maxHeight:'70vh',
-        overflowY:'scroll' ,
-        '&::-webkit-scrollbar':{width:'0px'}
-        }}>
+      <List sx={{marginTop:'1vh'}}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
@@ -152,7 +155,7 @@ function RightBar() {
         />
       </ListItem>
     </List>
-      </Box>
+      </RightSideBar>
   )
 }
 

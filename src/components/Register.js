@@ -71,7 +71,7 @@ function Register() {
             setStatusState(false)
             setStatusClass('')
             setStatusMsg('');
-            navigate('/')
+            navigate('/Edit-profile')
           }, 5000)
         })
         .catch((data) => {

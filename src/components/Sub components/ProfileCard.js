@@ -19,7 +19,7 @@ const ProfileArea = styled(Card)({
     boxShadow: 'none',
     cursor:'pointer'
 })
-function ProfileCard({ imageURL, desc }) {
+function ProfileCard({ imageURL, desc,username }) {
     return (
         <>
             <ProfileArea sx={{ width: '25vw', marginTop: '1.5vh', backgroundColor: '#F0F2F5' }}>
@@ -31,7 +31,7 @@ function ProfileCard({ imageURL, desc }) {
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                            user name
+                            {username}
                         </Typography>
                         <Typography gutterBottom variant="body2" marginTop='6vh'>
                             <strong>Bio</strong>

@@ -3,8 +3,6 @@ import { Button, Box, Typography, Stack, TextField, Divider, Link,Alert,Circular
 import { styled } from '@mui/system';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
-
 const LoginBox = styled(Box)({
   width: '98.3dvw',
   marginTop: "5dvh",
@@ -27,6 +25,7 @@ const Logincontainer = styled(Box)({
 })
 function Login() {
   const navigate = useNavigate()
+
   const [email, setEmail] = useState('')
   const [password, setPassowrd] = useState('')
   const [statusState, setStatusState] = useState(false)
@@ -34,15 +33,7 @@ function Login() {
   const [statusClass, setStatusClass] = useState('')
   const [loading, setloaging] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
-
-
-  //
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-  //
+  
   function getEmail(e) {
     setEmail(e.target.value)
   }
@@ -61,11 +52,11 @@ function Login() {
         email,
         password
       }
+     
       const result = axios.post('http://localhost:5000/login', body)
-      setloaging(true)
       result
       .then((result) => {
-        console.log(result.data.user);
+        console.log('inside login',result.data.user.id);
         setTimeout(() => {
           setloaging(false)
         }, 2000)

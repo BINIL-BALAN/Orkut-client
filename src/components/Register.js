@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Box, Typography, Stack, TextField, Alert, Link, CircularProgress } from '@mui/material';
+import { Button, Box, Typography, Stack, TextField, Link, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios'
 import uuid from 'react-uuid'
 import { useNavigate } from "react-router-dom";
+import AlertMessages from './Sub components/AlertMessages';
 const LoginBox = styled(Box)({
   width: '98.3dvw',
   marginTop: "5vh",
@@ -34,7 +35,6 @@ function Register() {
   const [checkPhone, setPhoneCheck] = useState(false)
   const [statusState, setStatusState] = useState(false)
   const [statusMsg, setStatusMsg] = useState('')
-  const [statusClass, setStatusClass] = useState('')
   const [loading, setloaging] = useState(false)
   function handleRegister(e) {
     e.preventDefault()
@@ -42,7 +42,7 @@ function Register() {
       setPhoneCheck(true)
       setStatusState(true)
       setStatusMsg('Please fill all field')
-      setStatusClass('error')
+      setStatusState(false)
     } else {
       const id = (uuid().slice(24, 35)) + phone
       const body = {
@@ -57,37 +57,34 @@ function Register() {
       setloaging(true)
       result
         .then((data) => {
+          localStorage.setItem('id',data.data.id)
           setTimeout(() => {
             setloaging(false)
           }, 2000)
 
           setTimeout(()=>{
           setStatusState(true)
-          setStatusClass('success')
           setStatusMsg(data.data.message);
           },2000)
 
           setTimeout(() => {
             setStatusState(false)
-            setStatusClass('')
             setStatusMsg('');
             navigate('/Edit-profile')
           }, 5000)
         })
         .catch((data) => {
+          
           setTimeout(() => {
             setloaging(false)
           }, 2000)
 
          setTimeout(()=>{
-          setStatusState(true)
-          setStatusClass('error')
+          setStatusState(false)
           setStatusMsg(data.response.data.message);
          },2000)
 
           setTimeout(() => {
-            setStatusState(false)
-            setStatusClass('')
             setStatusMsg('');
           }, 4000)
         })
@@ -122,7 +119,7 @@ function Register() {
           {loading ? (<CircularProgress />) : 'O'}rkut
         </Typography>
         <LoginBox>
-          {statusState ? (<Alert sx={{ width: '26vw' }} severity={statusClass}>{statusMsg}</Alert>) : ''}
+          <AlertMessages status={statusState} message={statusMsg}/>
           <Logincontainer>
             <Typography variant='h5' color='#1664af'>Create account</Typography>
             <Stack direction='row' marginTop='2.5vh'>

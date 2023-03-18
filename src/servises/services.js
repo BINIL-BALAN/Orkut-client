@@ -18,3 +18,8 @@ export async function uploadPost(formData){
       const result = await axios.post('http://localhost:5000/post-image',formData)
       return result
 }
+
+export async function deletePost(body){
+      const result = await axios.post('http://localhost:5000/delete-post',body)
+      return result
+}

@@ -23,6 +23,7 @@ const Logincontainer = styled(Box)({
   justifyContent: 'center',
   alignItems: 'center'
 })
+
 function Login() {
   const navigate = useNavigate()
 
@@ -32,7 +33,6 @@ function Login() {
   const [statusMsg, setStatusMsg] = useState('')
   const [statusClass, setStatusClass] = useState('')
   const [loading, setloaging] = useState(false)
-  const [showPassword, setShowPassword] = useState(false);
   
   function getEmail(e) {
     setEmail(e.target.value)
@@ -42,6 +42,7 @@ function Login() {
   }
 
   function handleLogin(e) {
+    setloaging(true)
     e.preventDefault()
     if(email === '' || password === ''){
       setStatusState(true)
@@ -97,12 +98,14 @@ function Login() {
   return (
     <Box>
       <Typography variant='h4' color='primary' sx={{ fontWeight: 'bolder', marginLeft: '5vw', marginTop: '2vh' }}>
-      {loading ? (<CircularProgress />) : 'O'}rkut
+      Orkut
       </Typography>
       <LoginBox>
       {statusState ? (<Alert sx={{width:'26vw'}} severity={statusClass}>{statusMsg}</Alert>) : ''}
         <Logincontainer>
-          <Typography variant='h5' color='#1664af'>Login</Typography>
+          <Typography variant='h5' color='#1664af' sx={{display:'flex',alignItems:'center'}}>
+            Login  {loading ?  <>&nbsp;<CircularProgress/> </>: ''}
+            </Typography>
           <Stack direction='column' marginTop='2vh'>
             <TextField value={email} onChange={getEmail} label="Email" type='email' variant="outlined" sx={{ width: '23.2vw' }} />
             <TextField value={password} onChange={getPassword} label="Password" type='password' variant="outlined" sx={{ width: '23.2vw', marginTop: '3vh' }} />

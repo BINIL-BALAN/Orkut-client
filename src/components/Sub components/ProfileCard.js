@@ -19,14 +19,14 @@ const ProfileArea = styled(Card)({
     boxShadow: 'none',
     cursor:'pointer'
 })
-function ProfileCard({ imageURL, desc,username }) {
+function ProfileCard({ imageURL, desc,username,posts,followers,following }) {
     return (
         <>
             <ProfileArea sx={{ width: '25vw', marginTop: '1.5vh', backgroundColor: '#F0F2F5' }}>
                 <CardActionArea>
                     <ProfileImage
                         component="img"
-                        image={imageURL? imageURL : 'https://img.freepik.com/premium-vector/anonymous-user-circle-icon-vector-illustration-flat-style-with-long-shadow_520826-1931.jpg'}
+                        image={imageURL? imageURL : 'no-dp.avif'}
                         alt="Profile image"
                     />
                     <CardContent>
@@ -41,13 +41,13 @@ function ProfileCard({ imageURL, desc,username }) {
                         </Typography>
                         <Stack direction='row' spacing={0} sx={{ marginTop: '6vh',width:'40vw'}}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                           <strong> {0} </strong> &nbsp; <strong>POSTS</strong>
+                           <strong> {posts?.length ? posts?.length : 0 } </strong> &nbsp; <strong>POSTS</strong>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                            <ViewFollowers count={0}/>
+                            <ViewFollowers followers={followers}/>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                            <ViewFollowing count={0}/>
+                            <ViewFollowing following={following}/>
                             </Box>
                         </Stack >
                     </CardContent>

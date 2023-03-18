@@ -37,6 +37,7 @@ function Register() {
   const [statusMsg, setStatusMsg] = useState('')
   const [loading, setloaging] = useState(false)
   function handleRegister(e) {
+    setloaging(true)
     e.preventDefault()
     if (firstName === '' || secondName === '' || email === '' || phone === '' || password === '' || phone.length !== 10) {
       setPhoneCheck(true)
@@ -54,7 +55,6 @@ function Register() {
         password
       }
       const result = axios.post('http://localhost:5000/register', body)
-      setloaging(true)
       result
         .then((data) => {
           localStorage.setItem('id',data.data.id)
@@ -71,10 +71,10 @@ function Register() {
             setStatusState(false)
             setStatusMsg('');
             navigate('/Edit-profile')
+            window.location.reload(true)
           }, 5000)
         })
         .catch((data) => {
-          
           setTimeout(() => {
             setloaging(false)
           }, 2000)
@@ -116,12 +116,14 @@ function Register() {
     <div>
       <Box>
         <Typography variant='h4' color='primary' sx={{ fontWeight: 'bolder', marginLeft: '5vw', marginTop: '2vh' }}>
-          {loading ? (<CircularProgress />) : 'O'}rkut
+          Orkut
         </Typography>
         <LoginBox>
           <AlertMessages status={statusState} message={statusMsg}/>
           <Logincontainer>
-            <Typography variant='h5' color='#1664af'>Create account</Typography>
+            <Typography variant='h5' color='#1664af'>
+              Create account  {loading ?  <>&nbsp;<CircularProgress/> </>: ''}
+              </Typography>
             <Stack direction='row' marginTop='2.5vh'>
               <TextField value={firstName} onChange={getFirstName} required type='text' id='firstName' label="First name" variant="outlined" sx={{ width: '11vw', margin: '0rem .5rem' }} />
               <TextField value={secondName} onChange={getSecondName} required label="Second name" variant="outlined" sx={{ width: '11vw', margin: '0rem .5rem' }} />

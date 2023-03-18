@@ -29,13 +29,13 @@ const listStyle = {
     overflowY:'scroll',
     '&&::-webkit-scrollbar':{width:'0px'}
 }
-function ViewFollowers({count}) {
+function ViewFollowers({followers}) {
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true)
   return (
     <>
-            <Button onClick={handleOpen} variant='p' fontSize='large'><strong>{count}</strong>&nbsp; Followers</Button>
+            <Button onClick={handleOpen} variant='p' fontSize='large'><strong>{followers?.length}</strong>&nbsp; Followers</Button>
 
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -52,7 +52,7 @@ function ViewFollowers({count}) {
             >
                 <Fade in={open}>
                     <Box sx={style}>
-                        <Typography>Following </Typography>
+                        <Typography>Followers</Typography>
                         <List sx={listStyle}>
                      
                             <ListItem alignItems="flex-start">

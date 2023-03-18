@@ -42,7 +42,8 @@ const UserBox = styled(Box)(({theme})=>({
 }))
 
 
-function Navbar({page}) {
+function Navbar({page,image,name,newMessage,newRequest}) {
+  console.log('inside navbar',newMessage,newRequest);
   return (
 <AppBar position='sticky'>
       <StyledToolBar p={1.5}>
@@ -54,16 +55,16 @@ function Navbar({page}) {
 
           <IconBox>
          <Icons>
-            <Badge badgeContent={4} color='error'>
+            <Badge badgeContent={newMessage?.length} color='error'>
               <MailIcon />
             </Badge>
-            <Badge badgeContent={2} color='error'>
+            <Badge badgeContent={newRequest?.length} color='error'>
               <NotificationsIcon />
             </Badge> 
          </Icons>
          <UserBox>
-          <Avatar />
-          <Typography>user</Typography>
+          <Avatar src={image? image : 'no-dp.avif'}/>
+          <Typography>{name ? name : 'user'}</Typography>
          </UserBox>
           </IconBox>
       </StyledToolBar>

@@ -29,13 +29,13 @@ const listStyle = {
     overflowY:'scroll',
     '&&::-webkit-scrollbar':{width:'0px'}
 }
-function ViewFollowing({count}) {
+function ViewFollowing({following}) {
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true)
     return (
         <>
-            <Button sx={{width:'10vw',margin:'0px'}} variant='p'  onClick={handleOpen} color='primary' fontSize='large'><strong>{count}</strong>&nbsp; Following</Button>
+            <Button sx={{width:'10vw',margin:'0px'}} variant='p'  onClick={handleOpen} color='primary' fontSize='large'><strong>{following?.length}</strong>&nbsp; Following</Button>
 
             <Modal
                 aria-labelledby="transition-modal-title"

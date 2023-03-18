@@ -1,4 +1,4 @@
-import { Box, Button, TextField,CircularProgress,Modal } from '@mui/material'
+import { Box, Button, TextField, CircularProgress, Modal } from '@mui/material'
 import { Stack } from '@mui/system'
 import React, { useState, useEffect } from 'react'
 import Sidebar from './Sub components/Sidebar'
@@ -23,7 +23,7 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-  };
+};
 const EditProfileBox = styled(List)({
     width: '55vw',
     height: 'fit-content',
@@ -39,6 +39,11 @@ function EditProfile() {
         secondname: '',
         email: '',
         bio: '',
+    })
+    const [extraDetails, setExtraDetails] = useState({
+        posts: [],
+        followers: [],
+        following: []
     })
     const [profileImage, setProfileImage] = useState()
     const [imageLink, setImageLink] = useState('')
@@ -57,6 +62,11 @@ function EditProfile() {
     // fetch all data when site load first
     useEffect(() => {
         fetchUserDetails().then((data) => {
+            setExtraDetails({
+                posts: data.post?.postedImages,
+                followers: data.user.followers,
+                following: data.user.following
+            })
             setDetails({
                 id: data.user.id,
                 firstname: data.user.firstName,
@@ -97,6 +107,7 @@ function EditProfile() {
                 setloaging(false)
             }, 1000);
             setOpen(true)
+            setStatusState(true)
             setStatusMsg(result.data.message);
             setTimeout(() => {
                 navigate('/Profile')
@@ -127,7 +138,7 @@ function EditProfile() {
                     <Box sx={{ width: '56.5%' }}>
 
                         <Typography variant='h5' sx={{ marginTop: '1vh' }}>Edit profile</Typography>
-                    <AlertMessages status={statusState} message={statusMsg}/>
+                        <AlertMessages status={statusState} message={statusMsg} />
                         <EditProfileBox sx={{ width: '60vw' }}>
                             <ListItem alignItems="flex-start">
                                 <Stack direction='row'>
@@ -183,7 +194,7 @@ function EditProfile() {
                             <ListItem alignItems="flex-start" sx={{ marginTop: '2vh' }}>
                                 <Box sx={{ display: 'flex', width: '70%', justifyContent: 'end' }}>
                                     <Button onClick={handleSubmit} variant='contained' color='success'>
-                                        Save &nbsp; <SaveIcon /> {loading ? (<CircularProgress sx={{marginLeft:'1vh'}}/>) : ''}
+                                        Save &nbsp; <SaveIcon /> {loading ? (<CircularProgress sx={{ marginLeft: '1vh' }} />) : ''}
                                     </Button>
                                     <Button href='/Edit-profile' variant='contained' color='error' sx={{ marginLeft: '1vw' }}>
                                         Reset <RestartAltIcon />
@@ -195,26 +206,32 @@ function EditProfile() {
 
                     </Box>
                     <Stack sx={{ width: '25vw', marginLeft: '2vw', marginTop: '5.8vh' }}>
-                        <ProfileCard imageURL={imageLink} posts={0} followers={0} following={0} desc={details.bio} username={details.firstname + " " + details.secondname} />
+                        <ProfileCard
+                            imageURL={imageLink}
+                            posts={extraDetails.posts}
+                            followers={extraDetails.followers}
+                            following={extraDetails.following}
+                            desc={details.bio}
+                            username={details.firstname + " " + details.secondname} />
                     </Stack>
                 </Stack>
             </Box>
 
             <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {statusMsg}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-           <Button href='/Profile' variant='contained' color='success'>View profile</Button>
-          </Typography>
-        </Box>
-      </Modal>
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {statusMsg}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <Button href='/Profile' variant='contained' color='success'>View profile</Button>
+                    </Typography>
+                </Box>
+            </Modal>
         </>
     )
 }

@@ -55,9 +55,10 @@ function Login() {
       }
      
       const result = axios.post('http://localhost:5000/login', body)
-      result
-      .then((result) => {
-        console.log('inside login',result.data.user.id);
+    // console.log('inside login',result);
+     result . then((result) => {
+        console.log('inside login',result.data?.user.id);
+        window.localStorage.setItem("id",result.data?.user.id)
         setTimeout(() => {
           setloaging(false)
         }, 2000)

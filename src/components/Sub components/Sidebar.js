@@ -1,7 +1,7 @@
 // ,borderRight:'1px solid rgba(0, 0, 0, 0.12)'
-import React,{useState} from 'react'
+import React from 'react'
 import { Box,Stack } from '@mui/system'
-import { Typography,Divider,Switch, Button  } from '@mui/material'
+import { Typography,Divider,Switch } from '@mui/material'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -10,30 +10,18 @@ import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import CommentIcon from '@mui/icons-material/Comment';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import EditIcon from '@mui/icons-material/Edit';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Backdrop from '@mui/material/Backdrop';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import SaveIcon from '@mui/icons-material/Save';
 import PostUpload from './PostUpload';
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import { useNavigate } from 'react-router-dom';
 function Sidebar() {
-
+  const navigate = useNavigate()
+function logout(e){
+  e.preventDefault()
+  window.localStorage.removeItem("id")
+  navigate('/')
+}
   return (
     <>
       <Box sx={{display:{xs:'none',sm:'block'},position:'relative',backgroundColor:'#F0F2F5'}} p={2} flex={1}>
@@ -80,7 +68,7 @@ function Sidebar() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton href='/'>
+              <ListItemButton onClick={logout} >
                 <ListItemIcon>
                   <LogoutIcon />
                 </ListItemIcon>

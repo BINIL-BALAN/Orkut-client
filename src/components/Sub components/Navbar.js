@@ -43,7 +43,6 @@ const UserBox = styled(Box)(({theme})=>({
 
 
 function Navbar({page,image,name,newMessage,newRequest}) {
-  console.log('inside navbar',newMessage,newRequest);
   return (
 <AppBar position='sticky'>
       <StyledToolBar p={1.5}>

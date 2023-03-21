@@ -39,7 +39,7 @@ function PostUpload({ page }) {
     const [details, setDetails] = useState()
     const [open, setOpen] = useState(false);
     const [imageURL, setImageURL] = useState('')
-    const [postImage, setPostImage] = useState()
+    const [postImage, setPostImage] = useState(null)
     const [desc, setDesc] = useState()
     const [uploadResult, setUploadResult] = useState()
     const [uploadState, setUploadState] = useState()
@@ -54,6 +54,7 @@ function PostUpload({ page }) {
     }
 
     useEffect(() => {
+        setPostImage(null)
         getProfileData().then((result) => {
             setDetails(result.data.details)
         })
@@ -72,7 +73,9 @@ function PostUpload({ page }) {
         }
         const formData = new FormData()
         formData.append('details', JSON.stringify(body))
-        formData.append('image', postImage)
+        if(postImage !== null){
+            formData.append('image', postImage)
+        }
         if (imageURL !== '') {
             uploadPost(formData).then((result) => {
                 setLoading(true)
@@ -80,6 +83,7 @@ function PostUpload({ page }) {
                     setLoading(false)
                     setUploadResult(result.data.message)
                     setUploadState(true)
+                    setPostImage(null)
                 }, 1000)
                 setTimeout(() => {
                     setImageURL('')

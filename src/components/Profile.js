@@ -143,8 +143,8 @@ function Profile() {
                     <Typography variant='h6'>{details.firstName ? details.firstName + ' ' + details.secondName : 'user name'}</Typography>
                     <Stack spacing={5} direction='row' marginTop='5vh'>
                       <Button variant='p' fontSize='large'><strong>{post?.length}</strong> &nbsp; Posts</Button>
-                      <ViewFollowers count={details.followersCount} />
-                      <ViewFollowing count={details.followingCount} />
+                      <ViewFollowers followers={details.followers} />
+                      <ViewFollowing following={details.following} />
                     </Stack>
                     <Stack direction='column' marginTop='5vh'>
                       <Typography component='strong' sx={{ display: 'flex', alignItems: 'center', marginBottom: '3vh' }}>

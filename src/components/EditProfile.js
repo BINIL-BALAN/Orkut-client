@@ -45,7 +45,7 @@ function EditProfile() {
         followers: [],
         following: []
     })
-    const [profileImage, setProfileImage] = useState()
+    const [profileImage, setProfileImage] = useState(null)
     const [imageLink, setImageLink] = useState('')
     const [statusState, setStatusState] = useState(false)
     const [statusMsg, setStatusMsg] = useState('')
@@ -61,7 +61,10 @@ function EditProfile() {
 
     // fetch all data when site load first
     useEffect(() => {
+        setProfileImage(null)
+       console.log('inside profile image',profileImage);
         fetchUserDetails().then((data) => {
+            console.log('inside profile',data);
             setExtraDetails({
                 posts: data.post?.postedImages,
                 followers: data.user.followers,
@@ -101,13 +104,16 @@ function EditProfile() {
         e.preventDefault()
         const formData = new FormData()
         formData.append('details', JSON.stringify(details))
-        formData.append('image', profileImage)
+        if(profileImage !== null){
+            formData.append('image', profileImage)
+        }
         updateUserDetails(formData).then(result => {
             setTimeout(() => {
                 setloaging(false)
             }, 1000);
             setOpen(true)
             setStatusState(true)
+
             setStatusMsg(result.data.message);
             setTimeout(() => {
                 navigate('/Profile')

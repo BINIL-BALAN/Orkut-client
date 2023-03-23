@@ -61,9 +61,9 @@ function Post({imageURL,date,username,likes,desc,profileImage,id,likedPost}) {
         <IconButton onClick={e=>likeAPost(e,id,imageURL)} aria-label="add to favorites">
         <Checkbox checked={likedPost.includes(imageURL) || check} icon={<FavoriteBorder />} checkedIcon={<FavoriteIcon sx={{color:'red'}} />} />
         </IconButton>
-        {like}
+          Likes {like}
         <IconButton aria-label="share">
-          <ShareIcon />
+        
         </IconButton>
       </CardActions>
     </Card>

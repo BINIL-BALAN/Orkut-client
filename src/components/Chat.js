@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Contacts from './Sub components/Contacts'
 import SidebarSmall from './Sub components/SidebarSmall'
 import { Typography, AppBar, Toolbar, Stack, Box, Avatar } from '@mui/material';
@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import io from 'socket.io-client'
 const StyledToolBar = styled(Toolbar)({
   display: 'flex',
   justifyContent: 'space-between'
@@ -20,6 +21,26 @@ const StyledToolBar = styled(Toolbar)({
 })
 
 function Chat() {
+  const [socket, setSocket] = useState()
+  const [sendMsg,setSendMsg] = useState("")
+  const [receiveMsg,setReceiveMsg] = useState('')
+  useEffect(() => {
+    const newSocket = io('http://localhost:5000/')
+    setSocket(newSocket)
+    return () => newSocket.close()
+  }, [setSocket])
+
+function send(e){
+    e.preventDefault()
+    socket?.emit('send-message',sendMsg)
+}
+socket?.on('receive-message',(message)=>{
+  setReceiveMsg(message)
+})
+  function handleMsg(e){
+    setSendMsg(e.target.value)
+  }
+
   return (
     <Box sx={{ height: '100vh' ,backgroundColor:'#F0F2F5' }}>
       <Stack  direction='row'>
@@ -65,15 +86,8 @@ function Chat() {
           </AppBar >
 
           <Box sx={{ maxHeight: '79vh', overflowY: 'scroll', '&::-webkit-scrollbar': { width: '0px' } }}>
-            <SendMsg />
-            <ReceiveMsg />
-            <SendMsg />
-            <SendMsg />
-            <SendMsg />
-            <ReceiveMsg />
-            <ReceiveMsg />
-            <ReceiveMsg />
-            <ReceiveMsg />
+            hello
+            {receiveMsg}
           </Box>
           <AppBar position="fixed"  sx={{ display: 'flex', width: '58.5vw', top: 'auto', bottom: 0 }}>
             <Toolbar>
@@ -85,8 +99,10 @@ function Chat() {
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Type....."
                   inputProps={{ 'aria-label': 'search google maps' }}
+                  value={sendMsg}
+                  onChange={handleMsg}
                 />
-                <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                <IconButton onClick={send} type="button" sx={{ p: '10px' }} aria-label="search">
                   <SendIcon />
                 </IconButton>
               </Paper>
@@ -100,5 +116,15 @@ function Chat() {
     </Box>
   )
 }
+
+{/* <SendMsg />
+            <ReceiveMsg />
+            <SendMsg />
+            <SendMsg />
+            <SendMsg />
+            <ReceiveMsg />
+            <ReceiveMsg />
+            <ReceiveMsg />
+            <ReceiveMsg /> */}
 
 export default Chat

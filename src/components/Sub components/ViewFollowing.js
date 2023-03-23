@@ -10,7 +10,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import ListItemButton from '@mui/material/ListItemButton';
+import { useNavigate } from 'react-router-dom';
+import Unfollow from '../Sub components/Unfollow'
 const style = {
     position: 'absolute',
     top: '50%',
@@ -29,10 +33,17 @@ const listStyle = {
     overflowY:'scroll',
     '&&::-webkit-scrollbar':{width:'0px'}
 }
-function ViewFollowing({following}) {
+function ViewFollowing({following,followers}) {
+    console.log('inside view following',followers);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true)
+
+    const navigate = useNavigate()
+  function viewProfile(e, id) {
+    e.preventDefault()
+    navigate('/view-other/'+id)
+  }
     return (
         <>
             <Button sx={{width:'10vw',margin:'0px'}} variant='p'  onClick={handleOpen} color='primary' fontSize='large'><strong>{following?.length}</strong>&nbsp; Following</Button>
@@ -55,137 +66,37 @@ function ViewFollowing({following}) {
                         <Typography>Following </Typography>
                         <List sx={listStyle}>
                      
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Brunch this weekend?"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Ali Connors
-                                            </Typography>
-                                            {" — I'll be in your neighborhood doing errands this…"}
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                                    
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Summer BBQ"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                to Scott, Alex, Jennifer
-                                            </Typography>
-                                            {" — Wish I could come, but I'm out of town this…"}
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                                       
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Oui Oui"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Sandra Adams
-                                            </Typography>
-                                            {' — Do you have Paris recommendations? Have you ever…'}
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                                       
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Oui Oui"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Sandra Adams
-                                            </Typography>
-                                            {' — Do you have Paris recommendations? Have you ever…'}
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                        
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Oui Oui"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Sandra Adams
-                                            </Typography>
-                                            {' — Do you have Paris recommendations? Have you ever…'}
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                        
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Oui Oui"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                Sandra Adams
-                                            </Typography>
-                                            {' — Do you have Paris recommendations? Have you ever…'}
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
+                        { following?.length> 0 ?
+                                following?.map(user => (
+                                    <ListItem alignItems="center">
+                                  <ListItemButton onClick={e=>viewProfile(e,user.id)}>
+                                        <ListItemAvatar>
+                                            <Avatar alt={user.firstName} src={user.profileImage} />
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={user.firstName + " " + user.secondName}
+                                            secondary={
+                                                <React.Fragment>
+                                                    <Typography
+                                                        component="span"
+                                                        variant="body2"
+                                                        color="text.primary"
+                                                        sx={{display:'flex',alignItems:'center'}}
+                                                    >
+                                                      <LocationOnIcon color='error'/> {user.loaction} &nbsp; {followers?.includes(followers?.find(follower => follower.id === user.id)) ? 
+                                                      (<Typography sx={{color:'green'}}>follower</Typography >) 
+                                                      : 'Not follower'}
+                                                    </Typography>
+                                                    
+                                                </React.Fragment>
+                                            }
+                                        />
+                                  </ListItemButton>
+                                  <Unfollow id={user.id}/>
+                                </ListItem>
+                                )) : "No following"
+                            }
+                
                         </List>
                     </Box>
                 </Fade>

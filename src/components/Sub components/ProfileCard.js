@@ -44,10 +44,10 @@ function ProfileCard({ imageURL, desc,username,posts,followers,following }) {
                            <strong> {posts?.length ? posts?.length : 0 } </strong> &nbsp; <strong>POSTS</strong>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                            <ViewFollowers followers={followers}/>
+                            <ViewFollowers text='folow back' following={following} followers={followers}/>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                            <ViewFollowing following={following}/>
+                            <ViewFollowing following={following} followers={followers}/>
                             </Box>
                         </Stack >
                     </CardContent>

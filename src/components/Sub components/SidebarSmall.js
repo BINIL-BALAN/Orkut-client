@@ -12,16 +12,25 @@ import EditIcon from '@mui/icons-material/Edit';
 import LogoutIcon from '@mui/icons-material/Logout';
 import styled from '@emotion/styled';
 import PostUpload from './PostUpload';
+import Tooltip from '@mui/material/Tooltip';
+import { useNavigate } from 'react-router-dom';
+import {CircularProgress} from '@mui/material';
 const ListButton = styled(ListItemButton)({
     display:'flex',
     justifyContent:'center',
     marginTop:'2vh'
 })
 function SidebarSmall() {
-  const [open,setOpen] = useState(false)
-  function handleOPen(){
-    setOpen(true)
-  }
+  const navigate = useNavigate()
+  const [loading,setLoading] = useState(false)
+function logout(e){
+  setLoading(true)
+  e.preventDefault()
+  window.localStorage.removeItem("id")
+  setTimeout(() => {
+    navigate('/')
+  }, 2000);
+}
   return (
     <Box sx={{display:{xs:'none',sm:'block'},position:'relative',backgroundColor:'#F0F2F5'}}>
       <Box sx={{textAlign:'center',marginTop:'2vh'}}>
@@ -30,40 +39,44 @@ function SidebarSmall() {
        <Stack direction='column' sx={{marginTop:'2vh'}}>
        <List>
           <ListItem disablePadding>
-            <ListButton href='/Home'>
-                <HomeIcon />
-            </ListButton>
+          <Tooltip title='Home' placement='right'>
+              <ListButton href='/Home'>
+                  <HomeIcon />
+              </ListButton>
+          </Tooltip>
           </ListItem>
           <ListItem disablePadding>
-            <ListButton href='/Profile'>
-            
-                <PersonIcon />
-              
-            </ListButton>
+            <Tooltip title='View profile' placement='right'>
+              <ListButton href='/Profile'>
+                  <PersonIcon />
+              </ListButton>
+            </Tooltip>
           </ListItem>
           <ListItem disablePadding>
-            <ListButton href='/Chat'>
-            
-                <CommentIcon />
-              
-            </ListButton>
+            <Tooltip title='Messages' placement='right'>
+              <ListButton href='/Chat'>
+                  <CommentIcon />
+              </ListButton>
+            </Tooltip>
+          </ListItem>
+         <Tooltip title='Upload post' placement='right'>
+            <ListItem disablePadding>
+              <PostUpload page={'message'}/>
+            </ListItem>
+         </Tooltip >
+          <ListItem disablePadding>
+            <Tooltip title='Edit profile' placement='right'>
+              <ListButton href='/Edit-profile'>
+                  <EditIcon />
+              </ListButton>
+            </Tooltip >
           </ListItem>
           <ListItem disablePadding>
-            <PostUpload page={'message'}/>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListButton href='/Edit-profile'>
-            
-                <EditIcon />
-              
-            </ListButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListButton>
-            
-                <LogoutIcon />
-              
-            </ListButton>
+           <Tooltip title='Log out' placement='right'>
+              <ListButton onClick={logout}>
+                  <LogoutIcon /> &nbsp; {loading ? (<CircularProgress/>) : ''}
+              </ListButton>
+           </Tooltip>
           </ListItem>
         </List>
        </Stack>

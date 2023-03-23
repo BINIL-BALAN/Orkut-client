@@ -62,13 +62,12 @@ function EditProfile() {
     // fetch all data when site load first
     useEffect(() => {
         setProfileImage(null)
-       console.log('inside profile image',profileImage);
         fetchUserDetails().then((data) => {
             console.log('inside profile',data);
             setExtraDetails({
                 posts: data.post?.postedImages,
-                followers: data.user.followers,
-                following: data.user.following
+                followers: data.followers,
+                following: data.following
             })
             setDetails({
                 id: data.user.id,

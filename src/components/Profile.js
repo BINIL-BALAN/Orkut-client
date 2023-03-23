@@ -59,6 +59,8 @@ function Profile() {
   const [loading,setLoading] = useState(false)
   const [statusMsg,setStatusMsg] = useState('')
   const [status,setStatus] = useState(true)
+  const [following,setFollowing] = useState([]) 
+  const [followers,setFollowers] = useState([])
   const handleClose = (e) => {
     e.preventDefault()
     setOpen(false);
@@ -116,7 +118,9 @@ function Profile() {
     getProfileData().then((result) => {
       setDetails(result.data.details);
       setPost(result.data.posts.postedImages)
-      console.log('inside profile', result.data.posts);
+      setFollowers(result.data.followers)
+      setFollowing(result.data.following)
+      console.log('inside profile', result.data);
     })
   }, [])
   return (
@@ -143,8 +147,8 @@ function Profile() {
                     <Typography variant='h6'>{details.firstName ? details.firstName + ' ' + details.secondName : 'user name'}</Typography>
                     <Stack spacing={5} direction='row' marginTop='5vh'>
                       <Button variant='p' fontSize='large'><strong>{post?.length}</strong> &nbsp; Posts</Button>
-                      <ViewFollowers followers={details.followers} />
-                      <ViewFollowing following={details.following} />
+                      <ViewFollowers text='follow back' following={following} followers={followers} />
+                      <ViewFollowing following={following} followers={followers}/>
                     </Stack>
                     <Stack direction='column' marginTop='5vh'>
                       <Typography component='strong' sx={{ display: 'flex', alignItems: 'center', marginBottom: '3vh' }}>

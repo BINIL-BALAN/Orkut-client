@@ -13,7 +13,7 @@ function FeedSection({page}) {
      })
   },[])
   
-  console.log(details);
+  console.log(details.followers);
   return (
     <Box flex={4}  sx={{}}>
         <Navbar page={page} 
@@ -24,7 +24,12 @@ function FeedSection({page}) {
         />
         <Stack direction='row'>
             <Feed posts={details?.post} likedPost={details.user?.likedPost}/>
-            <RightBar user={details?.user} miniProfiles={details?.miniProfile} posts={details?.userPosts}/>
+            <RightBar user={details?.user} 
+            miniProfiles={details?.miniProfile} 
+            posts={details?.userPosts}
+            followers={details.followers}
+            following={details.following}
+            />
         </Stack>
     </Box>
   )

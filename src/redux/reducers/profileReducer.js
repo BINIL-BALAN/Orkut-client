@@ -1,4 +1,5 @@
 import {SUCCESS,FAIL} from '../../constants'
+
 export const profileReducer = (state={profiles:[]},action)=>{    
    switch(action.type){
       case SUCCESS :

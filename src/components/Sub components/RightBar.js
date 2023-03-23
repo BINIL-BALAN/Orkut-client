@@ -11,7 +11,8 @@ import ProfileCard from './ProfileCard';
 import styled from '@emotion/styled';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ListItemButton from '@mui/material/ListItemButton';
-
+import { useNavigate } from 'react-router-dom';
+import Follow from './Follow';
 const RightSideBar = styled(Box)({
   width: '100%',
   marginTop: '',
@@ -20,11 +21,15 @@ const RightSideBar = styled(Box)({
   overflowY: 'scroll',
   '&::-webkit-scrollbar': { width: '0px' }
 })
-function RightBar({ user, miniProfiles, posts }) {
+
+function RightBar({ user, miniProfiles, posts,followers,following }) {
+  const navigate = useNavigate()
   function viewProfile(e, id) {
     e.preventDefault()
-      console.log(id);
+    navigate('/view-other/'+id)
+      console.log('',followers);
   }
+  console.log('inside sidebar',followers);
   return (
     <RightSideBar p={2} flex={2.1} sx={{ display: { xs: 'none', sm: 'block' }, backgroundColor: '#F0F2F5' }}>
       <Box sx={{ width: '23vw', marginLeft: '1vw' }}>
@@ -32,8 +37,8 @@ function RightBar({ user, miniProfiles, posts }) {
           desc={user?.bio}
           username={user?.firstName + ' ' + user?.secondName}
           posts={posts?.postedImages}
-          followers={user?.followers}
-          following={user?.following}
+          followers={followers}
+          following={following}
         />
       </Box >
       <Divider />
@@ -42,11 +47,11 @@ function RightBar({ user, miniProfiles, posts }) {
         {
           miniProfiles?.map(profile => (
            <>
-              <ListItem alignItems="flex-start">
+             { !following?.includes(following?.find(user=>user.id === profile.id)) ? (<ListItem alignItems="center">
                   <ListItemAvatar>
                     <Avatar alt={profile?.firstName} src={profile?.profileImage !== '' ? profile?.profileImage : 'no-dp.avif'} />
                   </ListItemAvatar>
-                  <ListItemButton>
+                  <ListItemButton href={`/view-other/${profile.id}`}>
                   <ListItemText
                     primary={profile?.firstName + " " + profile?.secondName}
                     secondary={
@@ -57,14 +62,14 @@ function RightBar({ user, miniProfiles, posts }) {
                               variant="body2"
                               color="text.primary"
                             >
-                              <LocationOnIcon /> {profile?.loaction} 
+                              <LocationOnIcon color='error'/> {profile?.loaction} 
                             </Typography>
                       </React.Fragment>
                     }
                   />
                   </ListItemButton>
-                  <Button color='primary' sx={{ fontSize: '.8rem' }}>Follow</Button> 
-              </ListItem>
+                 {followers?.includes(followers?.find(user => user.id === profile.id)) ? (<Follow text={'follow back'} requestId={profile.id} type='text'/>) : (<Follow text={'follow'} requestId={profile.id} type='text'/>)}
+              </ListItem> )  : ''}
               <Divider/>
            </>
           ))

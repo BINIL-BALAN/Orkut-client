@@ -19,3 +19,10 @@ export const getProfileDetails = () =>async (dispatch) =>{
     })
 }
 }
+
+export const passId = (id) =>async (dispatch) =>{
+      dispatch({
+          payload:id,
+          type : SUCCESS
+      })
+  }

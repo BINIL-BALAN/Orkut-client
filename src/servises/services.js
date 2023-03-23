@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export async function fetchUserDetails(){
       let id = window.localStorage.getItem('id')
    const result = await axios.get('http://localhost:5000/get-details/'+id)
@@ -44,4 +45,29 @@ export async function postLike(id,imageurl){
       }
       const result =await axios.post('http://localhost:5000/post-like',body)
       console.log(result);
+}
+
+export async function getOthersProfileData(id){
+     const result = await axios.get('http://localhost:5000/get-profile-details/'+id)
+     return result
+}
+
+export async function followRequest(requestId){
+      const requestedId = window.localStorage.getItem('id')
+      const body = {
+            fromId: requestedId,
+            toId: requestId
+      }
+      const result = await axios.post('http://localhost:5000/follow',body)
+      console.log(result);
+}
+
+export async function UnfollowRequest(requestId){
+      const requestedId = window.localStorage.getItem('id')
+      const body = {
+            fromId: requestedId,
+            toId: requestId
+      }
+      
+      const result = await axios.post('http://localhost:5000/unfollow',body)
 }

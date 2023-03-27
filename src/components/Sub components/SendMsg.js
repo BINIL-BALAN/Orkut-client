@@ -3,7 +3,7 @@ import { Box } from '@mui/system'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Stack, Typography } from '@mui/material';
-function SendMsg() {
+function SendMsg({message}) {
     return (
         <Box sx={{
             display: 'flex',
@@ -11,9 +11,9 @@ function SendMsg() {
             padding:2
         }}>
            <Stack>
-                <Card  sx={{ maxWidth:250,backgroundColor:'rgb(0, 149, 246)',color:'white'}}>
+                <Card  sx={{ maxWidth:250,backgroundColor:'rgb(0, 149, 246)',color:'white',marginRight:'1.6vw'}}>
                     <CardContent>
-                       hellsdsdfgvdgdfodfg fgbfghfgh fghfghfgh fghbfghfh
+                     {message}
                     </CardContent>
                 </Card>
                  <Typography sx={{width:'100%', textAlign:'right'}}>you</Typography>

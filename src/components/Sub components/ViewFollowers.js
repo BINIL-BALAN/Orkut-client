@@ -16,7 +16,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
-
+import { LAN_IP } from '../../constants';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -73,7 +73,7 @@ function ViewFollowers({ followers, following,text }) {
                                             <Stack direction='row'>
                                                 <ListItemButton onClick={e=>viewProfile(e,user.id)}>
                                                     <ListItemAvatar>
-                                                        <Avatar alt={user.firstName} src={user.profileImage} />
+                                                        <Avatar alt={user.firstName} src={user.profileImage.replace('localhost',LAN_IP)} />
                                                     </ListItemAvatar>
                                                     <ListItemText
                                                         primary={user.firstName + " " + user.secondName}

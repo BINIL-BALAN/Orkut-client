@@ -2,21 +2,22 @@ import React from 'react'
 import { Box } from '@mui/system'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Stack,Typography } from '@mui/material';
-function ReceiveMsg() {
+import { Avatar, Stack,Typography } from '@mui/material';
+import { LAN_IP } from '../../constants';
+function ReceiveMsg({message,image}) {
   return (
     <Box sx={{
         display: 'flex',
         justifyContent: 'start',
         padding:2
     }}>
-       <Stack>
-            <Card  sx={{ maxWidth:250,backgroundColor:'white',color:'black'}}>
+       <Stack direction='column' sx={{display:'flex',alignItems:'top'}}>
+            <Card  sx={{ maxWidth:250,backgroundColor:'white',color:'black',marginLeft:'2.1vw'}}>
                 <CardContent>
-                   hellsdsdfgvdgdfodfg fgbfghfgh fghfghfgh fghbfghfh
+                   {message}
                 </CardContent>
             </Card>
-            <Typography>sender</Typography>
+            <Avatar src={image?.replace('localhost',LAN_IP)} sx={{width:32,height:32}}/>
        </Stack >
     </Box>
   )

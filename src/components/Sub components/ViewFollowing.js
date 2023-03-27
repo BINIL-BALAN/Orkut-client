@@ -15,6 +15,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useNavigate } from 'react-router-dom';
 import Unfollow from '../Sub components/Unfollow'
+import { LAN_IP } from '../../constants';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -71,7 +72,7 @@ function ViewFollowing({following,followers}) {
                                     <ListItem alignItems="center">
                                   <ListItemButton onClick={e=>viewProfile(e,user.id)}>
                                         <ListItemAvatar>
-                                            <Avatar alt={user.firstName} src={user.profileImage} />
+                                            <Avatar alt={user.firstName} src={user.profileImage.replace('localhost',LAN_IP)} />
                                         </ListItemAvatar>
                                         <ListItemText
                                             primary={user.firstName + " " + user.secondName}

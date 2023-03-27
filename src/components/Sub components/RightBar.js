@@ -13,6 +13,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useNavigate } from 'react-router-dom';
 import Follow from './Follow';
+import { LAN_IP } from '../../constants';
 const RightSideBar = styled(Box)({
   width: '100%',
   marginTop: '',
@@ -49,7 +50,7 @@ function RightBar({ user, miniProfiles, posts,followers,following }) {
            <>
              { !following?.includes(following?.find(user=>user.id === profile.id)) ? (<ListItem alignItems="center">
                   <ListItemAvatar>
-                    <Avatar alt={profile?.firstName} src={profile?.profileImage !== '' ? profile?.profileImage : 'no-dp.avif'} />
+                    <Avatar alt={profile?.firstName} src={profile?.profileImage !== '' ? profile?.profileImage.replace('localhost',LAN_IP) : 'no-dp.avif'} />
                   </ListItemAvatar>
                   <ListItemButton href={`/view-other/${profile.id}`}>
                   <ListItemText

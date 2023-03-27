@@ -13,7 +13,7 @@ import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {postLike} from '../../servises/services'
-
+import { LAN_IP } from '../../constants';
 function Post({imageURL,date,username,likes,desc,profileImage,id,likedPost}) {
   const [check,setCheck] = useState(false)
   const [like,setLikes] = useState(likes)
@@ -31,7 +31,7 @@ function Post({imageURL,date,username,likes,desc,profileImage,id,likedPost}) {
         <Card sx={{ maxWidth: "100%" }}>
       <CardHeader
         avatar={
-          <Avatar src={profileImage ? profileImage : ''} sx={{ bgcolor: 'red' }} aria-label="recipe">
+          <Avatar src={profileImage ? profileImage.replace('localhost',LAN_IP) : ''} sx={{ bgcolor: 'red' }} aria-label="recipe">
           </Avatar>
         }
         action={
@@ -47,7 +47,7 @@ function Post({imageURL,date,username,likes,desc,profileImage,id,likedPost}) {
           sx={{borderRadius:'10px',width:'95%'}}
             component="img"
             height="20%"
-            image={imageURL}
+            image={imageURL.replace('localhost',LAN_IP)}
             alt={desc}
           />
         </Box >

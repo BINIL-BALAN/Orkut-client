@@ -6,6 +6,7 @@ import { theme } from '../../theme/theme';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import MailIcon from '@mui/icons-material/Mail';
+import { LAN_IP } from '../../constants';
 const StyledToolBar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between"
@@ -62,7 +63,7 @@ function Navbar({page,image,name,newMessage,newRequest}) {
             </Badge> 
          </Icons>
          <UserBox>
-          <Avatar src={image? image : 'no-dp.avif'}/>
+          <Avatar src={image? image.replace('localhost',LAN_IP) : 'no-dp.avif'}/>
           <Typography>{name ? name : 'user'}</Typography>
          </UserBox>
           </IconBox>

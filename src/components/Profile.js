@@ -23,7 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { deletePost } from '../servises/services'
 import Modal from '@mui/material/Modal';
 import {Alert} from '@mui/material'
-
+import { LAN_IP } from '../constants'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -128,7 +128,7 @@ function Profile() {
       <Stack sx={{ height: '100%' }} direction='row' justifyContent='space-between' spacing={.3}>
         <Box sx={{ width: '20vw' }}><SideBar sx={{ height: 100 }} /></Box >
         <Box flex={4} sx={{}}>
-          <Navbar page={'Profile'} image={details.profileImage} name={details.firstName + " " + details.secondName} 
+          <Navbar page={'Profile'} image={details.profileImage?.replace('localhost',LAN_IP)} name={details.firstName + " " + details.secondName} 
           newMessage={details.newMessage} 
           newRequest={details.newRequests}
           />
@@ -138,7 +138,7 @@ function Profile() {
                 <Avatar
                   alt="Remy Sharp"
                   src={
-                    details.profileImage ? details.profileImage : 'no-dp.avif'
+                    details.profileImage ? details.profileImage?.replace('localhost',LAN_IP) : 'no-dp.avif'
                   }
                   sx={{ width: 200, height: 200 }}
                 />
@@ -179,7 +179,7 @@ function Profile() {
                       <ImageListItem key={item.img}>
                         <img
                           src={`${item.img}?w=248&fit=crop&auto=format`}
-                          srcSet={item.imageURL}
+                          srcSet={item.imageURL?.replace('localhost',LAN_IP)}
                           alt={item.desc}
                           loading="lazy"
                         />

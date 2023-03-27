@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Box, Typography, Stack, TextField, Divider, Link,Alert,CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
+import { LAN_IP } from '../constants';
 import { useNavigate } from "react-router-dom";
 const LoginBox = styled(Box)({
   width: '98.3dvw',
@@ -53,8 +54,8 @@ function Login() {
         email,
         password
       }
-     
-      const result = axios.post('http://localhost:5000/login', body)
+      
+      const result = axios.post(`http://${LAN_IP}:5000/login`, body)
     // console.log('inside login',result);
      result . then((result) => {
         console.log('inside login',result.data?.user.id);
@@ -77,6 +78,7 @@ function Login() {
         }, 3000)
       })
       .catch((data) => {
+        console.log(data);
         setTimeout(() => {
           setloaging(false)
         }, 2000)
@@ -84,7 +86,7 @@ function Login() {
        setTimeout(()=>{
         setStatusState(true)
         setStatusClass('error')
-        setStatusMsg(data.response.data.message);
+        setStatusMsg(data?.response.data.message);
        },2000)
 
         setTimeout(() => {

@@ -7,6 +7,7 @@ import { Box, CardActionArea, Stack } from '@mui/material';
 import styled from '@emotion/styled';
 import ViewFollowers from './ViewFollowers'
 import ViewFollowing from './ViewFollowing'
+import { LAN_IP } from '../../constants';
 const ProfileImage = styled(CardMedia)({
     width: '79%',
     height: '41vh',
@@ -26,7 +27,7 @@ function ProfileCard({ imageURL, desc,username,posts,followers,following }) {
                 <CardActionArea>
                     <ProfileImage
                         component="img"
-                        image={imageURL? imageURL : 'no-dp.avif'}
+                        image={imageURL? imageURL.replace('localhost',LAN_IP) : 'no-dp.avif'}
                         alt="Profile image"
                     />
                     <CardContent>

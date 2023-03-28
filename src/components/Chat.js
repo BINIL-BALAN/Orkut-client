@@ -14,7 +14,7 @@ import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import io from 'socket.io-client'
 import { getContacts } from '../servises/services';
-
+import { deleteAllChats } from '../servises/services';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -27,94 +27,6 @@ const StyledToolBar = styled(Toolbar)({
   justifyContent: 'space-between'
 
 })
-
-const allChats = [
-  {
-    
-    id: "810175d34c41234567000",
-    chats:[
-        {
-          send:true,
-          message:'hello'
-        },
-        {
-          send:false,
-          message:'haii'
-        },
-        {
-           send:true,
-          message:'how ar you'
-        },
-        {
-           send:false,
-          message:'fine'
-        },
-         {
-          send:false,
-          message:'how are you ?'
-        },
-        {
-           send:true,
-          message:'fine'
-        }
-    ]
-  },
-  {
-    id:"c5bc838b7961234567000",
-    chats:[
-      {
-        send:true,
-        message:'hello'
-      },
-      {
-        send:false,
-        message:'haii'
-      },
-      {
-         send:true,
-        message:'how ar you'
-      }
-    ]
-  },
-  {
-    id:"edaa089a6e61234567000",
-    chats:[
-      {
-        send:true,
-        message:'hello'
-      },
-      {
-        send:false,
-        message:'haii'
-      },
-      {
-         send:true,
-        message:'how ar you'
-      }
-    ]
-  },
-  {
-    id:"f260b3196311234567000",
-    chats:[
-      {
-        send:true,
-       message:'how ar you'
-     },
-     {
-        send:false,
-       message:'fine'
-     },
-      {
-       send:false,
-       message:'how are you ?'
-     },
-     {
-        send:true,
-       message:'fine'
-     }
-    ]
-  }
-]
 
 function Chat() {
   
@@ -160,12 +72,10 @@ function Chat() {
   }
 
   //receiving a message from a friend
-  socket?.on('receive-message',(messagebody)=>{
-  // let message =  {
-  //    send:false,
-  //    message:messagebody.message
-  // } 
-  setChatBuffer([...chatsBuffer,messagebody])
+  socket?.on('receive-message',(messagebody,allchats,fromId)=>{
+    console.log(allchats);
+    setAllMessages(allchats)
+    setChatBuffer(allchats.find(chatUser => chatUser.id === fromId ).messages)
  })
 
   //sending a message to frient
@@ -188,6 +98,12 @@ function Chat() {
     setSendMsg(e.target.value)
   }
 
+async function deleteChats(e,toid){
+  e.preventDefault()
+ const allChats =await deleteAllChats(toid)
+ setAllMessages(allChats)
+ setChatBuffer(allChats.find(msgUser => msgUser?.id === user?.id).messages)
+}
   return (
     <Box sx={{ height: '100vh', backgroundColor: '#F0F2F5' }}>
       <Stack direction='row'>
@@ -254,7 +170,7 @@ function Chat() {
                     <Typography color='white' variant='h5'>Orkut</Typography>
                     <Stack direction='row' spacing={1}>
                       <Tooltip title="Delete all chats" sx={{ color: 'white' }}>
-                        <IconButton>
+                        <IconButton onClick={e=>deleteChats(e,user.id)}>
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
@@ -292,7 +208,6 @@ function Chat() {
                       />
                       <IconButton onClick={send} type="button" sx={{ p: '10px' }} aria-label="search">
                         <SendIcon />
-                        
                       </IconButton>
                     </Paper>
                     <IconButton type="button" sx={{ p: '10px' }} aria-label="search">

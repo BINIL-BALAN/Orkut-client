@@ -86,7 +86,7 @@ function Login() {
        setTimeout(()=>{
         setStatusState(true)
         setStatusClass('error')
-        setStatusMsg(data?.response.data.message);
+        setStatusMsg(data.response.data?.message !== undefined ? data.response.data?.message : data.message);
        },2000)
 
         setTimeout(() => {

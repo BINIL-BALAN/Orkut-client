@@ -79,3 +79,12 @@ export async function getContacts() {
      const result = await instance.get('contacts/'+id)
      return result
 }
+
+export async function deleteAllChats(toId){
+      const body={
+        fromId:window.localStorage.getItem("id"),
+        toId
+      }
+const result = await instance.post('/delete-all-chats',body) 
+return result.data?.messages
+}

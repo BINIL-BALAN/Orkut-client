@@ -15,12 +15,15 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import PostUpload from './PostUpload';
 import { useNavigate } from 'react-router-dom';
+import { userLogout } from '../../servises/services';
 function Sidebar() {
   const navigate = useNavigate()
 function logout(e){
   e.preventDefault()
-  window.localStorage.removeItem("id")
-  navigate('/')
+  userLogout().then((result)=>{
+    window.localStorage.removeItem("id")
+    navigate('/')
+  })
 }
   return (
     <>

@@ -31,6 +31,7 @@ const StyledToolBar = styled(Toolbar)({
 function Chat() {
   
   const [userId, setUserId] = useState(window.localStorage.getItem("id"))
+  const [connectionId,setConnectionId] = useState()
   const [receiverName,setReceiverName] = useState('')
   const [chatsBuffer, setChatBuffer] = useState([])
   const [key, setKey] = useState()
@@ -43,6 +44,7 @@ function Chat() {
   useEffect(() => {
     getContacts().then((result) => {
       setContacts(result.data?.contacts) 
+      console.log(result.data?.contacts);
       setAllMessages(result.data?.allMessages)
     })
     const newSocket = io(`http://${LAN_IP}:5000/`)
@@ -51,9 +53,9 @@ function Chat() {
   }, [setSocket])
 
   // connecting to friend
-  socket?.on('join-key', (key) => {
+  socket?.on('join-key', (key,connectId) => {
     if (userId === key) {
-      socket.emit('join', key)
+      socket.emit('join', key,connectId)
     }
   })
 
@@ -62,8 +64,10 @@ function Chat() {
  function connect(e, key,image) {
     e.preventDefault()
     setKey(key)
+    let  connetId = userId + key
+    setConnectionId(connetId)
     setReceiverName(image)
-    socket?.emit('join', key)
+    socket?.emit('join', key,connetId)
     setUser(contacts.find(contact => contact.id === key));
      const chats = allMessages.find(user => user.id === key)?.messages
      setChatBuffer(chats);
@@ -86,7 +90,7 @@ function Chat() {
       to:key,
       message: sendMsg,
     }
-    socket?.emit('send-message', messageBody, key)
+    socket?.emit('send-message', messageBody, connectionId)
    const newMessage = {
     send:true,
     message:sendMsg
@@ -164,7 +168,7 @@ async function deleteChats(e,toid){
                       <Avatar alt={user?.firstName} src={user?.profileImage?.replace('localhost',LAN_IP)} />
                       <Stack direction='column'>
                         <Typography variant='h6' marginLeft={2}>{user?.firstName + " " + user?.secondName}</Typography>
-                        <Typography marginLeft={2}>online</Typography>
+                        <Typography marginLeft={2}>{user.online ? "online" : 'offline'}</Typography>
                       </Stack >
                     </Stack>
                     <Typography color='white' variant='h5'>Orkut</Typography>
@@ -196,6 +200,7 @@ async function deleteChats(e,toid){
                 <AppBar position="fixed" sx={{ display: 'flex', width: '62.5vw', top: 'auto', bottom: 0 }}>
                   <Toolbar>
                     <Paper
+                      onSubmit={send}
                       component="form"
                       sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 700, borderRadius: '25px' }}
                     >
@@ -206,7 +211,7 @@ async function deleteChats(e,toid){
                         value={sendMsg}
                         onChange={handleMsg}
                       />
-                      <IconButton onClick={send} type="button" sx={{ p: '10px' }} aria-label="search">
+                      <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
                         <SendIcon />
                       </IconButton>
                     </Paper>
@@ -216,7 +221,7 @@ async function deleteChats(e,toid){
                   </Toolbar>
                 </AppBar>
               </>) : (
-              <Box sx={{ height: '99%' }}>
+              <Box sx={{ height: '89.2%' }}>
                   <AppBar position='sticky'>
                   <StyledToolBar p={1.5} sx={{display:'flex',justifyContent:'center'}}>
                     <Typography sx={{ display: { md: 'none' } }} variant='h6'>  Orkut</Typography> 
@@ -224,7 +229,6 @@ async function deleteChats(e,toid){
                   </StyledToolBar>
                 </AppBar >
                 <img width='100%' height='100%' src='chat.gif'/>
-
               </Box>
             )
           }

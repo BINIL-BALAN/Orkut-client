@@ -22,6 +22,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deletePost } from '../servises/services'
 import Modal from '@mui/material/Modal';
+import CardContent from '@mui/material/CardContent';
 import {Alert} from '@mui/material'
 import { LAN_IP } from '../constants'
 const style = {
@@ -148,18 +149,23 @@ function Profile() {
                     <Stack spacing={5} direction='row' marginTop='5vh'>
                       <Button variant='p' fontSize='large'><strong>{post?.length}</strong> &nbsp; Posts</Button>
                       <ViewFollowers text='follow back' following={following} followers={followers} />
-                      <ViewFollowing following={following} followers={followers}/>
+                      <ViewFollowing following={following} followers={followers} other={true}/>
                     </Stack>
                     <Stack direction='column' marginTop='5vh'>
                       <Typography component='strong' sx={{ display: 'flex', alignItems: 'center', marginBottom: '3vh' }}>
                         <LocationOnIcon color='error' />  {details.location}
                       </Typography>
-                      <Typography variant='p' sx={{ width: '30vw', marginTop: '.5vh', display: 'flex', alignItems: 'center' }}>
-                        <DescriptionIcon /> Bio
-                      </Typography>
-                      <Typography component='p' sx={{ width: '30vw', marginTop: '1vh', marginLeft: '2vw' }}>
-                        {details.bio}
-                      </Typography>
+                    <Box sx={{border:'1px solid rgba(0, 0, 0, 0.12)',borderRadius:'15px'}}>
+                         <CardContent>
+                            <Typography variant='p' sx={{ width: '30vw', my: '1vh', display: 'flex', alignItems: 'center' }}>
+                              <DescriptionIcon /> Bio :
+                            </Typography>
+                            <Divider/>
+                            <Typography component='p' sx={{ width: '30vw', marginTop: '1vh', marginLeft: '2vw'}}>
+                              {details.bio}
+                            </Typography>
+                         </CardContent>
+                     </Box>
                     </Stack>
                   </Stack>
                 </Box>

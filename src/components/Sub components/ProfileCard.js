@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Box, CardActionArea, Stack } from '@mui/material';
+import { Box, Button, CardActionArea, Stack } from '@mui/material';
 import styled from '@emotion/styled';
 import ViewFollowers from './ViewFollowers'
 import ViewFollowing from './ViewFollowing'
@@ -24,7 +24,7 @@ function ProfileCard({ imageURL, desc,username,posts,followers,following }) {
     return (
         <>
             <ProfileArea sx={{ width: '25vw', marginTop: '1.5vh', backgroundColor: '#F0F2F5' }}>
-                <CardActionArea>
+                <>
                     <ProfileImage
                         component="img"
                         image={imageURL? imageURL.replace('localhost',LAN_IP) : 'no-dp.avif'}
@@ -41,9 +41,9 @@ function ProfileCard({ imageURL, desc,username,posts,followers,following }) {
                             {desc ? desc : 'No description'}
                         </Typography>
                         <Stack direction='row' spacing={0} sx={{ marginTop: '6vh',width:'40vw'}}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                           <strong> {posts?.length ? posts?.length : 0 } </strong> &nbsp; <strong>POSTS</strong>
-                            </Box>
+                            <Button sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly',color:'black' }}>
+                           <strong> {posts?.length ? posts?.length : 0 } </strong> &nbsp; POSTS
+                            </Button>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
                             <ViewFollowers text='folow back' following={following} followers={followers}/>
                             </Box>
@@ -52,7 +52,7 @@ function ProfileCard({ imageURL, desc,username,posts,followers,following }) {
                             </Box>
                         </Stack >
                     </CardContent>
-                </CardActionArea>
+                </>
             </ProfileArea>
         </>
     )

@@ -15,6 +15,7 @@ import PostUpload from './PostUpload';
 import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
+import { userLogout } from '../../servises/services';
 const ListButton = styled(ListItemButton)({
     display:'flex',
     justifyContent:'center',
@@ -26,10 +27,13 @@ function SidebarSmall() {
 function logout(e){
   setLoading(true)
   e.preventDefault()
-  window.localStorage.removeItem("id")
-  setTimeout(() => {
-    navigate('/')
-  }, 2000);
+  userLogout().then((result)=>{
+    window.localStorage.removeItem("id")
+    setTimeout(() => {
+      navigate('/')
+    }, 2000);
+  })
+  
 }
   return (
     <Box sx={{display:{xs:'none',sm:'block'},position:'relative',backgroundColor:'#F0F2F5'}}>

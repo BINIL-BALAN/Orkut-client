@@ -14,6 +14,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { useNavigate } from 'react-router-dom';
 import Follow from './Follow';
 import { LAN_IP } from '../../constants';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 const RightSideBar = styled(Box)({
   width: '100%',
   marginTop: '',
@@ -28,9 +29,7 @@ function RightBar({ user, miniProfiles, posts,followers,following }) {
   function viewProfile(e, id) {
     e.preventDefault()
     navigate('/view-other/'+id)
-      console.log('',followers);
   }
-  console.log('inside sidebar',followers);
   return (
     <RightSideBar p={2} flex={2.1} sx={{ display: { xs: 'none', sm: 'block' }, backgroundColor: '#F0F2F5' }}>
       <Box sx={{ width: '23vw', marginLeft: '1vw' }}>
@@ -68,6 +67,7 @@ function RightBar({ user, miniProfiles, posts,followers,following }) {
                       </React.Fragment>
                     }
                   />
+                  <FiberManualRecordIcon color={profile.online ? 'success' : 'error'} sx={{fontSize:'small'}}/>
                   </ListItemButton>
                  {followers?.includes(followers?.find(user => user.id === profile.id)) ? (<Follow text={'follow back'} requestId={profile.id} type='text'/>) : (<Follow text={'follow'} requestId={profile.id} type='text'/>)}
               </ListItem> )  : ''}

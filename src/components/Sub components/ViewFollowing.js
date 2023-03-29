@@ -16,6 +16,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { useNavigate } from 'react-router-dom';
 import Unfollow from '../Sub components/Unfollow'
 import { LAN_IP } from '../../constants';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -34,12 +35,10 @@ const listStyle = {
     overflowY:'scroll',
     '&&::-webkit-scrollbar':{width:'0px'}
 }
-function ViewFollowing({following,followers}) {
-    console.log('inside view following',followers);
+function ViewFollowing({following,followers,other}) {
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true)
-
     const navigate = useNavigate()
   function viewProfile(e, id) {
     e.preventDefault()
@@ -47,7 +46,7 @@ function ViewFollowing({following,followers}) {
   }
     return (
         <>
-            <Button sx={{width:'10vw',margin:'0px'}} variant='p'  onClick={handleOpen} color='primary' fontSize='large'><strong>{following?.length}</strong>&nbsp; Following</Button>
+            <Button sx={{width:'10vw',margin:'0px',color:'rgb(0, 149, 246)'}} variant='p'  onClick={handleOpen} color='primary' fontSize='large'><strong>{following?.length}</strong>&nbsp; Following</Button>
 
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -74,6 +73,7 @@ function ViewFollowing({following,followers}) {
                                         <ListItemAvatar>
                                             <Avatar alt={user.firstName} src={user.profileImage.replace('localhost',LAN_IP)} />
                                         </ListItemAvatar>
+                                        <FiberManualRecordIcon color={user.online ? 'success' : 'error'} sx={{fontSize:'small',marginRight:'.4vw'}}/>
                                         <ListItemText
                                             primary={user.firstName + " " + user.secondName}
                                             secondary={
@@ -93,7 +93,7 @@ function ViewFollowing({following,followers}) {
                                             }
                                         />
                                   </ListItemButton>
-                                  <Unfollow id={user.id}/>
+                                  {other ? (<Unfollow id={user.id}/>) : ''}
                                 </ListItem>
                                 )) : "No following"
                             }

@@ -10,10 +10,10 @@ function FeedSection({page}) {
   useEffect(()=>{
      getFeed().then((result)=>{
       setDetails(result.data);
+      console.log(result.data.miniProfile)
      })
   },[])
   
-  console.log(details.followers);
   return (
     <Box flex={4}  sx={{}}>
         <Navbar page={page} 
@@ -21,6 +21,8 @@ function FeedSection({page}) {
         name={details.user?.firstName+ " " +details.user?.secondName}
         newMessage={details.user?.newMessage}
         newRequest={details.user?.newRequests}
+        miniProfile={details?.miniProfile}
+        following={details.following}
         />
         <Stack direction='row'>
             <Feed posts={details?.post} likedPost={details.user?.likedPost}/>

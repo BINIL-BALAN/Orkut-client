@@ -88,3 +88,10 @@ export async function deleteAllChats(toId){
 const result = await instance.post('/delete-all-chats',body) 
 return result.data?.messages
 }
+
+export async function userLogout(){
+      const body = {
+            id:window.localStorage.getItem("id")
+      }
+     return await instance.post('/logout',body) 
+}

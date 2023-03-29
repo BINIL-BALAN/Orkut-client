@@ -17,6 +17,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
 import { LAN_IP } from '../../constants';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -47,7 +48,7 @@ function ViewFollowers({ followers, following,text }) {
     }
     return (
         <>
-            <Button onClick={handleOpen} variant='p' fontSize='large'><strong>{followers?.length}</strong>&nbsp; Followers</Button>
+            <Button sx={{color:'rgb(0, 149, 246)'}} onClick={handleOpen} variant='p' fontSize='large'><strong>{followers?.length}</strong>&nbsp; Followers</Button>
 
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -72,9 +73,11 @@ function ViewFollowers({ followers, following,text }) {
                                        <ListItemButton>
                                             <Stack direction='row'>
                                                 <ListItemButton onClick={e=>viewProfile(e,user.id)}>
+                                                    
                                                     <ListItemAvatar>
                                                         <Avatar alt={user.firstName} src={user.profileImage.replace('localhost',LAN_IP)} />
                                                     </ListItemAvatar>
+                                                    <FiberManualRecordIcon color={user.online ? 'success' : 'error'} sx={{fontSize:'small',marginRight:'.4vw'}}/>
                                                     <ListItemText
                                                         primary={user.firstName + " " + user.secondName}
                                                         secondary={
@@ -90,6 +93,7 @@ function ViewFollowers({ followers, following,text }) {
                                                             </React.Fragment>
                                                         }
                                                     />
+                                                   
                                                 </ListItemButton>
                                                 {following?.includes(following?.find(follow => follow.id === user.id)) ? (<Button variant='text' sx={{color:'green'}}><HowToRegIcon /></Button>) : (<Follow text={text} requestId={user.id} />)}
                                             </Stack >

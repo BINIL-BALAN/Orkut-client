@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Stack } from '@mui/system'
 import { Button, Divider, CircularProgress } from '@mui/material'
 import SideBar from './Sub components/Sidebar'
@@ -20,6 +20,8 @@ import IconButton from '@mui/material/IconButton';
 import { useParams } from 'react-router-dom'
 import Follow from './Sub components/Follow'
 import Unfollow from './Sub components/Unfollow'
+import { LAN_IP } from '../constants'
+import CardContent from '@mui/material/CardContent';
 const ProfileArea = styled(Stack)({
     width: '100%',
     height: '89.5vh',
@@ -37,22 +39,22 @@ const PostsView = styled(Stack)({
 
 function OtherProfile() {
     const [details, setDetails] = useState({})
-    const [post,setPost] = useState([])
-    const [following,setFollowing] = useState([]) 
-    const [followers,setFollowers] = useState([])
-    const [id,setId] = useState()
+    const [post, setPost] = useState([])
+    const [following, setFollowing] = useState([])
+    const [followers, setFollowers] = useState([])
+    const [id, setId] = useState()
     const params = useParams()
     console.log(params.id);
- useEffect(()=>{
-    getOthersProfileData(params.id).then((result)=>{
-        setDetails(result.data.details)
-        setPost(result.data.posts.postedImages)
-        setFollowers(result.data.followers)
-        setFollowing(result.data.following)
-        setId(window.localStorage.getItem("id"))
-    })
- },[])
- console.log(details);
+    useEffect(() => {
+        getOthersProfileData(params.id).then((result) => {
+            setDetails(result.data.details)
+            setPost(result.data.posts.postedImages)
+            setFollowers(result.data.followers)
+            setFollowing(result.data.following)
+            setId(window.localStorage.getItem("id"))
+        })
+    }, [])
+    console.log(details);
     return (
         <Box sx={{ backgroundColor: '#F0F2F5' }}>
             <Stack sx={{ height: '100%' }} direction='row' justifyContent='space-between' spacing={.3}>
@@ -68,7 +70,7 @@ function OtherProfile() {
                                 <Avatar
                                     alt="Remy Sharp"
                                     src={
-                                        details.profileImage ? details.profileImage : 'no-dp.avif'
+                                        details.profileImage ? details.profileImage?.replace('localhost', LAN_IP) : 'no-dp.avif'
                                     }
                                     sx={{ width: 200, height: 200 }}
                                 />
@@ -78,27 +80,32 @@ function OtherProfile() {
                                         <Stack spacing={5} direction='row' marginTop='5vh'>
                                             <Button variant='p' fontSize='large'><strong>{post?.length}</strong> &nbsp; Posts</Button>
                                             <ViewFollowers type={false} followers={followers} />
-                                            <ViewFollowing type={false} following={following} />
+                                            <ViewFollowing type={false} following={following} other={false} />
                                         </Stack>
                                         <Stack direction='column' marginTop='5vh'>
                                             <Typography component='strong' sx={{ display: 'flex', alignItems: 'center', marginBottom: '3vh' }}>
-                                                <LocationOnIcon color='error' />  {'details.location'}
+                                                <LocationOnIcon color='error' />  {details.location}
                                             </Typography>
-                                            <Typography variant='p' sx={{ width: '30vw', marginTop: '.5vh', display: 'flex', alignItems: 'center' }}>
-                                                <DescriptionIcon /> Bio
-                                            </Typography>
-                                            <Typography component='p' sx={{ width: '30vw', marginTop: '1vh', marginLeft: '2vw' }}>
-                                                {details.bio}
-                                            </Typography>
+                                            <Box sx={{ border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: '15px' }}>
+                                                <CardContent>
+                                                    <Typography variant='p' sx={{ width: '30vw', my: '1vh', display: 'flex', alignItems: 'center' }}>
+                                                        <DescriptionIcon /> Bio :
+                                                    </Typography>
+                                                    <Divider />
+                                                    <Typography component='p' sx={{ width: '30vw', marginTop: '1vh', marginLeft: '2vw' }}>
+                                                        {details.bio}
+                                                    </Typography>
+                                                </CardContent>
+                                            </Box>
                                         </Stack>
                                     </Stack>
                                 </Box>
                             </Stack>
                             <Stack spacing={2} direction='row' marginTop='6vh' sx={{ marginLeft: '12vw' }}>
 
-                             {followers.includes(followers.find(user=>user.id === id)) ? (<Unfollow id={params.id} type='outlined'/>) : (<Follow requestId={params.id} type='outlined' text={'follow'}/>)}
+                                {followers.includes(followers.find(user => user.id === id)) ? (<Unfollow id={params.id} type='outlined' />) : (<Follow requestId={params.id} type='outlined' text={'follow'} />)}
 
-                                <Button variant='contained' color='primary'>message</Button>
+                                <Button variant='contained' color='primary' href='/Chat'>message</Button>
                             </Stack>
                             <Divider sx={{ marginTop: '3vh', width: '66vw', marginLeft: '7vw' }} />
 
@@ -110,7 +117,7 @@ function OtherProfile() {
                                             <ImageListItem key={item.img}>
                                                 <img
                                                     src={`${item.img}?w=248&fit=crop&auto=format`}
-                                                    srcSet={item.imageURL}
+                                                    srcSet={item.imageURL?.replace('localhost', LAN_IP)}
                                                     alt={item.desc}
                                                     loading="lazy"
                                                 />

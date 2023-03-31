@@ -1,5 +1,5 @@
-import React from 'react'
-import { Typography, AppBar, Toolbar, Stack, Box, Badge, Avatar,ListItemButton } from '@mui/material';
+import React,{useState,useEffect} from 'react'
+import { Typography, AppBar, Toolbar, Stack, Box, Badge, Avatar,ListItemButton,IconButton } from '@mui/material';
 import styled from '@emotion/styled';
 import HomeIcon from '@mui/icons-material/Home';
 import { theme } from '../../theme/theme';
@@ -10,6 +10,8 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Follow from './Follow';
 import { LAN_IP } from '../../constants';
+import io from 'socket.io-client'
+
 const StyledToolBar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between"
@@ -47,7 +49,24 @@ const UserBox = styled(Box)(({ theme }) => ({
 
 
 function Navbar({ page, image, name, newMessage, newRequest,miniProfile,following }) {
-  console.log('inside navbar',miniProfile)
+  const [socket, setSocket] = useState()
+  const [notification,setNotification] = useState([])
+  const [id,setId] = useState(window.localStorage.getItem("id"))
+  useEffect(()=>{
+    setNotification(newMessage)
+    const newSocket = io(`http://${LAN_IP}:5000/`)
+    setSocket(newSocket)
+    return () => newSocket.close()
+  },[setSocket])
+
+  socket?.emit('new-messages', id)
+  socket?.on('get-newChats', (newMsg) => {
+  console.log('default new message',notification)
+  console.log('default new message props',newMessage)
+  console.log('reat time newMessage',newMsg);
+    setNotification(newMsg);
+  })
+
   return (
     <AppBar position='sticky'>
       <StyledToolBar p={1.5}>
@@ -101,9 +120,11 @@ function Navbar({ page, image, name, newMessage, newRequest,miniProfile,followin
 
         <IconBox>
           <Icons>
-            <Badge badgeContent={newMessage?.length} color='error'>
+            <IconButton sx={{color:'white'}} href='/Chat'>
+            <Badge badgeContent={notification?.length} color='error'>
               <MailIcon />
             </Badge>
+            </IconButton>
             <Badge badgeContent={newRequest?.length} color='error'>
               <NotificationsIcon />
             </Badge>

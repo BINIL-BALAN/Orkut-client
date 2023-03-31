@@ -86,7 +86,11 @@ function Chat() {
   socket?.on('receive-message', (messagebody, allchats, fromId) => {
     console.log(allchats);
     setAllMessages(allchats)
-    setChatBuffer(allchats.find(chatUser => chatUser.id === fromId).messages)
+    console.log('key',key)
+    console.log('fromId',fromId)
+    if(fromId === key){
+      setChatBuffer(allchats.find(chatUser => chatUser.id === fromId).messages)
+    }
   })
 
   //sending a message to frient

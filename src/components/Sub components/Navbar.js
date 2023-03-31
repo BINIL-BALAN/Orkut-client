@@ -48,23 +48,27 @@ const UserBox = styled(Box)(({ theme }) => ({
 }))
 
 
-function Navbar({ page, image, name, newMessage, newRequest,miniProfile,following }) {
+function Navbar({ page, image, name, newMessage, details,miniProfile,following }) {
   const [socket, setSocket] = useState()
-  const [notification,setNotification] = useState([])
+  const [notification,setNotification] = useState(newMessage)
   const [id,setId] = useState(window.localStorage.getItem("id"))
   useEffect(()=>{
     setNotification(newMessage)
     const newSocket = io(`http://${LAN_IP}:5000/`)
     setSocket(newSocket)
+    setTimeout(() => {
+      setNotification(details.user?.newMessage)
+    }, 1000);
     return () => newSocket.close()
-  },[setSocket])
-
+  },[setSocket,setNotification])
   socket?.emit('new-messages', id)
   socket?.on('get-newChats', (newMsg) => {
-  console.log('default new message',notification)
-  console.log('default new message props',newMessage)
+  // console.log('default new message',notification)
+  // console.log('default new message props',newMessage)
   console.log('reat time newMessage',newMsg);
+   if(notification !== newMsg){
     setNotification(newMsg);
+   }
   })
 
   return (
@@ -121,13 +125,10 @@ function Navbar({ page, image, name, newMessage, newRequest,miniProfile,followin
         <IconBox>
           <Icons>
             <IconButton sx={{color:'white'}} href='/Chat'>
-            <Badge badgeContent={notification?.length} color='error'>
+            <Badge badgeContent={(notification || newMessage)?.length} color='error'>
               <MailIcon />
             </Badge>
             </IconButton>
-            <Badge badgeContent={newRequest?.length} color='error'>
-              <NotificationsIcon />
-            </Badge>
           </Icons>
           <UserBox>
             <Avatar src={image ? image.replace('localhost', LAN_IP) : 'no-dp.avif'} />

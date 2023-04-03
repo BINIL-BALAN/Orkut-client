@@ -41,30 +41,48 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
   },
 }));
-
-const arra = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+const HorizontalScroll = styled(Stack)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+  overflowX: 'scroll',
+  marginRight: '1vw',
+  '&::-webkit-scrollbar': { height: '6px' },
+  '&::-webkit-scrollbar-track': { background: 'transprent' },
+  '&::-webkit-scrollbar-thumb': { background: '#1976d2', borderRadius: '8px' }
+}))
+const arra = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 function QuatsWrite({ miniProfiles }) {
   return (
-    <>
-      <Typography>Online</Typography>
-      <Stack direction={'row'} sx={{}}>
+    <Stack sx={{ width: '50vw', paddingRight: '1.9vw' }}>
+      <Typography sx={{ marginLeft: '2vw' }}>Online</Typography>
+      <HorizontalScroll >
         {
-          arra.map(item => (
-            <Stack sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', marginLeft: '1.5vw' }}>
-          <StyledBadge
-            sx={{ width: '2.8vw' }}
-            overlap="circular"
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            variant="dot"
-          >
-            <Avatar alt="Remy Sharp"  />
-          </StyledBadge> 
-          <Typography sx={{ fontSize: 'small' }}>Name</Typography>
-        </Stack>
+          miniProfiles?.map(profile => (
+            <>
+              {profile.online ? (
+                <Stack sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', marginLeft: '1.5vw' }}>
+                  <StyledBadge
+                    sx={{ width: '2.8vw' }}
+                    overlap="circular"
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    variant="dot"
+                  >
+                    <Avatar alt={profile?.firstName} src={profile.profileImage?.replace('localhost', LAN_IP)} />
+                  </StyledBadge>
+                  <Typography sx={{ fontSize: 'small' }}>{profile?.firstName + ' ' + profile?.secondName.slice(0, 2)}</Typography>
+                </Stack>) :
+                (
+                  <Stack sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', marginLeft: '1.5vw' }}>
+                    <Avatar alt={profile?.firstName} src={profile.profileImage?.replace('localhost', LAN_IP)} />
+                    <Typography sx={{ fontSize: 'small' }}>{profile?.firstName + ' ' + profile?.secondName.slice(0, 2)}</Typography>
+                  </Stack>
+                )}
+            </>
           ))
         }
-      </Stack>
-    </>
+      </HorizontalScroll>
+    </Stack>
   )
 }
 // <Card sx={{ width:'95%'}}>

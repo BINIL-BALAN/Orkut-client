@@ -6,10 +6,9 @@ import QuatsWrite from './QuatsWrite';
 
 function Feed({posts,likedPost,miniProfiles}) {
   return (
- 
       <Box flex={4} sx={{overflowY:'scroll',maxHeight:'89.7vh','&::-webkit-scrollbar':{width:'0px'}}} color={'text.primary'}>
        <Stack direction='column' bgcolor={'background.default'}>
-       <Box sx={{display:'flex',justifyContent:'center',marginTop:'3vh',width:'20vw'}}> 
+       <Box sx={{display:'flex',justifyContent:'center',marginTop:'3vh',width:'50vw'}}> 
        <QuatsWrite miniProfiles={miniProfiles} /> 
        </Box >
           {posts?.length > 0 ?

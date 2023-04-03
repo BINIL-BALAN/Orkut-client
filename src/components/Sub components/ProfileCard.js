@@ -23,7 +23,7 @@ const ProfileArea = styled(Card)({
 function ProfileCard({ imageURL, desc,username,posts,followers,following }) {
     return (
         <>
-            <ProfileArea sx={{ width: '25vw', marginTop: '1.5vh', backgroundColor: '#F0F2F5' }}>
+            <ProfileArea sx={{ width: '26vw', marginTop: '1.5vh',marginBottom:'2vh', backgroundColor: 'background.default' }} color={'text.primary'}>
                 <>
                     <ProfileImage
                         component="img"
@@ -41,7 +41,7 @@ function ProfileCard({ imageURL, desc,username,posts,followers,following }) {
                             {desc ? desc : 'No description'}
                         </Typography>
                         <Stack direction='row' spacing={0} sx={{ marginTop: '6vh',width:'40vw'}}>
-                            <Button sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly',color:'black' }}>
+                            <Button sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly',color:'text.primary' }}>
                            <strong> {posts?.length ? posts?.length : 0 } </strong> &nbsp; POSTS
                             </Button>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>

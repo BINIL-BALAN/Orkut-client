@@ -64,7 +64,7 @@ function ViewFollowers({ followers, following,text }) {
                 }}
             >
                 <Fade in={open}>
-                    <Box sx={style}>
+                    <Box sx={style} color={'text.primary'}> 
                         <Typography>Followers</Typography>
                         <List sx={listStyle}>
                             {followers?.length > 0 ?

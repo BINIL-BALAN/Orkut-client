@@ -122,6 +122,7 @@ function PostUpload({ page }) {
 
 
             <Modal
+                
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 open={open}
@@ -135,7 +136,7 @@ function PostUpload({ page }) {
                 }}
             >
                 <Fade in={open}>
-                    <Box sx={style}>
+                    <Box sx={style} color='text.primary'>
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                             <AlertMessages status={uploadState} message={uploadResult} />
                         </Box>

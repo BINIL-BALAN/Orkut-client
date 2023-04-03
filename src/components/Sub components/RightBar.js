@@ -31,8 +31,8 @@ function RightBar({ user, miniProfiles, posts,followers,following }) {
     navigate('/view-other/'+id)
   }
   return (
-    <RightSideBar p={2} flex={2.1} sx={{ display: { xs: 'none', sm: 'block' }, backgroundColor: '#F0F2F5' }}>
-      <Box sx={{ width: '23vw', marginLeft: '1vw' }}>
+    <RightSideBar p={2} flex={2.1} sx={{ display: { xs: 'none', sm: 'block' }}} bgcolor={'background.default'} color={'text.primary'}>
+      <Box sx={{ width: '23vw', marginLeft: '1vw' }} >
         <ProfileCard imageURL={user?.profileImage}
           desc={user?.bio}
           username={user?.firstName + ' ' + user?.secondName}

@@ -11,7 +11,7 @@ function SendMsg({message}) {
             padding:2
         }}>
            <Stack>
-                <Card  sx={{ maxWidth:250,backgroundColor:'rgb(0, 149, 246)',color:'white',marginRight:'1.6vw'}}>
+                <Card rounded sx={{minWidth:90, maxWidth:250,backgroundColor:'rgb(0, 149, 246)',color:'white',marginRight:'1.6vw',borderRadius:'18px'}}>
                     <CardContent>
                      {message}
                     </CardContent>

@@ -4,28 +4,30 @@ import Feed from './Feed'
 import RightBar from './RightBar'
 import Navbar from './Navbar'
 import {getFeed} from '../../servises/services'
-import { useSelector } from 'react-redux'
 function FeedSection({page}) {
   const [details,setDetails] = useState([])
+  const [newMessages,setNewMessages] = useState([])
   useEffect(()=>{
      getFeed().then((result)=>{
       setDetails(result.data);
-      console.log(result.data.miniProfile)
+      setNewMessages(result.data.user.newMessage)
+      console.log('new messages',result.data.user?.newMessage)
      })
   },[])
   
   return (
-    <Box flex={4}  sx={{}}>
+    <Box flex={4}  bgcolor={'background.default'}>
         <Navbar page={page} 
         image={details.user?.profileImage} 
         name={details.user?.firstName+ " " +details.user?.secondName}
-        newMessage={details.user?.newMessage}
-        newRequest={details.user?.newRequests}
+        newMessage={newMessages}
+        details={details}
         miniProfile={details?.miniProfile}
         following={details.following}
+        notificationStatus={true}
         />
         <Stack direction='row'>
-            <Feed posts={details?.post} likedPost={details.user?.likedPost}/>
+            <Feed miniProfiles={details?.miniProfile} posts={details?.post} likedPost={details.user?.likedPost} profileImage={details.user?.profileImage} name={details.user?.firstName+ " " +details.user?.secondName}/>
             <RightBar user={details?.user} 
             miniProfiles={details?.miniProfile} 
             posts={details?.userPosts}

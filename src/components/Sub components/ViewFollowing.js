@@ -62,7 +62,7 @@ function ViewFollowing({following,followers,other}) {
                 }}
             >
                 <Fade in={open}>
-                    <Box sx={style}>
+                    <Box sx={style} color={'text.primary'}>
                         <Typography>Following </Typography>
                         <List sx={listStyle}>
                      

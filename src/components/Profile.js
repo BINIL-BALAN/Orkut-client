@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Stack } from '@mui/system'
-import { Button, Divider,CircularProgress } from '@mui/material'
+import { Button, Divider,CircularProgress,ThemeProvider } from '@mui/material'
 import SideBar from './Sub components/Sidebar'
 import Navbar from './Sub components/Navbar'
 import styled from '@emotion/styled'
@@ -25,6 +25,7 @@ import Modal from '@mui/material/Modal';
 import CardContent from '@mui/material/CardContent';
 import {Alert} from '@mui/material'
 import { LAN_IP } from '../constants'
+import { createTheme } from '@mui/material'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -53,6 +54,7 @@ const PostsView = styled(Stack)({
 })
 
 function Profile() {
+  const [mode, setMode] = useState(window.localStorage.getItem("mode") || 'light')
   const [details, setDetails] = useState({})
   const [post, setPost] = useState([])
   const [open, setOpen] = useState(false);
@@ -62,6 +64,12 @@ function Profile() {
   const [status,setStatus] = useState(true)
   const [following,setFollowing] = useState([]) 
   const [followers,setFollowers] = useState([])
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode
+    }
+  })
+  
   const handleClose = (e) => {
     e.preventDefault()
     setOpen(false);
@@ -125,129 +133,134 @@ function Profile() {
     })
   }, [])
   return (
-    <Box sx={{ backgroundColor: '#F0F2F5' }}>
-      <Stack sx={{ height: '100%' }} direction='row' justifyContent='space-between' spacing={.3}>
-        <Box sx={{ width: '20vw' }}><SideBar sx={{ height: 100 }} /></Box >
-        <Box flex={4} sx={{}}>
-          <Navbar page={'Profile'} image={details.profileImage?.replace('localhost',LAN_IP)} name={details.firstName + " " + details.secondName} 
-          newMessage={details.newMessage} 
-          newRequest={details.newRequests}
-          />
-          <Stack direction='column'>
-            <ProfileArea direction='column'>
-              <Stack direction='row' sx={{ marginTop: '5vh', marginLeft: '10vw' }}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={
-                    details.profileImage ? details.profileImage?.replace('localhost',LAN_IP) : 'no-dp.avif'
-                  }
-                  sx={{ width: 200, height: 200 }}
-                />
-                <Box sx={{ marginLeft: '5vw' }}>
-                  <Stack direction='column'>
-                    <Typography variant='h6'>{details.firstName ? details.firstName + ' ' + details.secondName : 'user name'}</Typography>
-                    <Stack spacing={5} direction='row' marginTop='5vh'>
-                      <Button variant='p' fontSize='large'><strong>{post?.length}</strong> &nbsp; Posts</Button>
-                      <ViewFollowers text='follow back' following={following} followers={followers} />
-                      <ViewFollowing following={following} followers={followers} other={true}/>
+   <ThemeProvider theme={darkTheme}>
+      <Box bgcolor={'background.default'} color={'text.primary'}>
+        <Stack sx={{ height: '100%' }} direction='row' justifyContent='space-between' spacing={.3}>
+          <Box sx={{ width: '20vw' }}>
+            <SideBar setMode={setMode} mode={mode} sx={{ height: 100 }} />
+            </Box >
+          <Box flex={4} sx={{}}>
+            <Navbar page={'Profile'} image={details.profileImage?.replace('localhost',LAN_IP)} name={details.firstName + " " + details.secondName} 
+            newMessage={details.newMessage} 
+            newRequest={details.newRequests}
+            notificationStatus={true}
+            />
+            <Stack direction='column'>
+              <ProfileArea direction='column'>
+                <Stack direction='row' sx={{ marginTop: '5vh', marginLeft: '10vw' }}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={
+                      details.profileImage ? details.profileImage?.replace('localhost',LAN_IP) : 'no-dp.avif'
+                    }
+                    sx={{ width: 200, height: 200 }}
+                  />
+                  <Box sx={{ marginLeft: '5vw' }}>
+                    <Stack direction='column'>
+                      <Typography variant='h6'>{details.firstName ? details.firstName + ' ' + details.secondName : 'user name'}</Typography>
+                      <Stack spacing={5} direction='row' marginTop='5vh'>
+                        <Button variant='p' fontSize='large'><strong>{post?.length}</strong> &nbsp; Posts</Button>
+                        <ViewFollowers text='follow back' following={following} followers={followers} />
+                        <ViewFollowing following={following} followers={followers} other={true}/>
+                      </Stack>
+                      <Stack direction='column' marginTop='5vh'>
+                        <Typography component='strong' sx={{ display: 'flex', alignItems: 'center', marginBottom: '3vh' }}>
+                          <LocationOnIcon color='error' />  {details.location}
+                        </Typography>
+                      <Box sx={{border:'1px solid rgba(0, 0, 0, 0.12)',borderRadius:'15px'}}>
+                           <CardContent>
+                              <Typography variant='p' sx={{ width: '30vw', my: '1vh', display: 'flex', alignItems: 'center' }}>
+                                <DescriptionIcon /> Bio :
+                              </Typography>
+                              <Divider/>
+                              <Typography component='p' sx={{ width: '30vw', marginTop: '1vh', marginLeft: '2vw'}}>
+                                {details.bio}
+                              </Typography>
+                           </CardContent>
+                       </Box>
+                      </Stack>
                     </Stack>
-                    <Stack direction='column' marginTop='5vh'>
-                      <Typography component='strong' sx={{ display: 'flex', alignItems: 'center', marginBottom: '3vh' }}>
-                        <LocationOnIcon color='error' />  {details.location}
-                      </Typography>
-                    <Box sx={{border:'1px solid rgba(0, 0, 0, 0.12)',borderRadius:'15px'}}>
-                         <CardContent>
-                            <Typography variant='p' sx={{ width: '30vw', my: '1vh', display: 'flex', alignItems: 'center' }}>
-                              <DescriptionIcon /> Bio :
-                            </Typography>
-                            <Divider/>
-                            <Typography component='p' sx={{ width: '30vw', marginTop: '1vh', marginLeft: '2vw'}}>
-                              {details.bio}
-                            </Typography>
-                         </CardContent>
-                     </Box>
-                    </Stack>
-                  </Stack>
-                </Box>
-              </Stack>
-
-              <Stack spacing={2} direction='row' marginTop='6vh' sx={{ marginLeft: '12vw' }}>
-                <ProfileUpload page='profile' details={details} />
-                <Button variant='contained' color='primary' href='/Edit-profile'>Edit &nbsp; <EditIcon /></Button>
-              </Stack>
-              <Divider sx={{ marginTop: '3vh', width: '66vw', marginLeft: '7vw' }} />
-
-              <PostsView>
-                <Typography sx={{ width: '30vw', marginTop: '.5vh', display: 'flex', justifyContent: 'center' }}><GridOnIcon /> POSTS</Typography >
-                {
-                  post.length > 0 ? (<ImageList sx={{ width: 900, height: '100%' }} cols={3} rowHeight={300} gap={10}>
-                    {post?.map((item) => (
-                      <ImageListItem key={item.img}>
-                        <img
-                          src={`${item.img}?w=248&fit=crop&auto=format`}
-                          srcSet={item.imageURL?.replace('localhost',LAN_IP)}
-                          alt={item.desc}
-                          loading="lazy"
-                        />
-                        <ImageListItemBar
-                          title={item.desc}
-                          subtitle={''}
-                          actionIcon={
-                            <><IconButton
-                              sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                              aria-label={`info about ${item.desc}`}
-                            >
-                              {item.likes} <FavoriteIcon color='error' sx={{ marginLeft: '4px' }} />
-                            </IconButton>
-                              <IconButton
+                  </Box>
+                </Stack>
+  
+                <Stack spacing={2} direction='row' marginTop='6vh' sx={{ marginLeft: '12vw' }}>
+                  <ProfileUpload page='profile' details={details} />
+                  <Button variant='contained' color='primary' href='/Edit-profile'>Edit &nbsp; <EditIcon /></Button>
+                </Stack>
+                <Divider sx={{ marginTop: '3vh', width: '66vw', marginLeft: '7vw' }} />
+  
+                <PostsView>
+                  <Typography sx={{ width: '30vw', marginTop: '.5vh', display: 'flex', justifyContent: 'center' }}><GridOnIcon /> POSTS</Typography >
+                  {
+                    post.length > 0 ? (<ImageList sx={{ width: 900, height: '100%' }} cols={3} rowHeight={300} gap={10}>
+                      {post?.map((item) => (
+                        <ImageListItem key={item.img}>
+                          <img
+                            src={`${item.img}?w=248&fit=crop&auto=format`}
+                            srcSet={item.imageURL?.replace('localhost',LAN_IP)}
+                            alt={item.desc}
+                            loading="lazy"
+                          />
+                          <ImageListItemBar
+                            title={item.desc}
+                            subtitle={''}
+                            actionIcon={
+                              <><IconButton
                                 sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                                 aria-label={`info about ${item.desc}`}
-                                onClick={e => handleOpen(e, item.imageURL)}
                               >
-                                <DeleteIcon color='white' sx={{ marginLeft: '4px' }} />
-                              </IconButton></>
-                          }
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>) : (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginY: '7vh' }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'center' }}><CameraAltRoundedIcon sx={{ fontSize: '8rem' }} /></Box >
-                      <Typography variant="h3" sx={{}}><strong>No post yet</strong></Typography>
-                    </Box>
-                  )
-                }
-              </PostsView>
-              <Typography sx={{ width: '100%', textAlign: 'center' }}>All &copy; copyright @ Binil.E.B 2023 </Typography>
-            </ProfileArea>
-          </Stack>
-        </Box>
-      </Stack>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {statusMsg !== '' ?(<Alert color={status? 'success' : 'error'} sx={{marginBottom:'1vh'}}>{statusMsg}</Alert>):''}
-          </Typography>
-          <Box sx={{ height: '30vh', width: '100%' }}>
-            <img src={imgUrl} width='100%' height='100%' />
+                                {item.likes} <FavoriteIcon color='error' sx={{ marginLeft: '4px' }} />
+                              </IconButton>
+                                <IconButton
+                                  sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                  aria-label={`info about ${item.desc}`}
+                                  onClick={e => handleOpen(e, item.imageURL)}
+                                >
+                                  <DeleteIcon color='white' sx={{ marginLeft: '4px' }} />
+                                </IconButton></>
+                            }
+                          />
+                        </ImageListItem>
+                      ))}
+                    </ImageList>) : (
+                      <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginY: '7vh' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}><CameraAltRoundedIcon sx={{ fontSize: '8rem' }} /></Box >
+                        <Typography variant="h3" sx={{}}><strong>No post yet</strong></Typography>
+                      </Box>
+                    )
+                  }
+                </PostsView>
+                <Typography sx={{ width: '100%', textAlign: 'center' }}>All &copy; copyright @ Binil.E.B 2023 </Typography>
+              </ProfileArea>
+            </Stack>
           </Box>
-          <Typography id="modal-modal-description" sx={{ marginTop: '6vh' }}>
-            Are you sure want to delete this post
-          </Typography>
-          <Stack direction='row' sx={{ width: '100%', display: 'flex', justifyContent: 'end', }}>
-            <Button color='error' variant='outlined' onClick={e => deleteOnePost(e, details.id, imgUrl)}> yes&nbsp; 
-            {loading? (<CircularProgress color='error'/>) : ''}
-            </Button>
-            <Button color='success' variant='outlined' onClick={e => handleClose(e)} sx={{ marginLeft: '1vw' }}>No</Button>
-          </Stack>
-        </Box>
-      </Modal>
-    </Box>
+        </Stack>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              {statusMsg !== '' ?(<Alert color={status? 'success' : 'error'} sx={{marginBottom:'1vh'}}>{statusMsg}</Alert>):''}
+            </Typography>
+            <Box sx={{ height: '30vh', width: '100%' }}>
+              <img src={imgUrl} width='100%' height='100%' />
+            </Box>
+            <Typography id="modal-modal-description" sx={{ marginTop: '6vh' }}>
+              Are you sure want to delete this post
+            </Typography>
+            <Stack direction='row' sx={{ width: '100%', display: 'flex', justifyContent: 'end', }}>
+              <Button color='error' variant='outlined' onClick={e => deleteOnePost(e, details.id, imgUrl)}> yes&nbsp; 
+              {loading? (<CircularProgress color='error'/>) : ''}
+              </Button>
+              <Button color='success' variant='outlined' onClick={e => handleClose(e)} sx={{ marginLeft: '1vw' }}>No</Button>
+            </Stack>
+          </Box>
+        </Modal>
+      </Box>
+   </ThemeProvider >
   )
 }
 

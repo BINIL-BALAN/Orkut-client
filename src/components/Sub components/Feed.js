@@ -4,12 +4,13 @@ import LowerNavBar from './LowerNavBar'
 import Post from './Post'
 import QuatsWrite from './QuatsWrite';
 
-function Feed({posts,likedPost}) {
+function Feed({posts,likedPost,miniProfiles}) {
   return (
- 
-      <Box flex={4} sx={{overflowY:'scroll',maxHeight:'89.7vh','&::-webkit-scrollbar':{width:'0px'}}}>
-       <Stack direction='column' sx={{backgroundColor:'#F0F2F5'}} >
-       <Box sx={{display:'flex',justifyContent:'center',marginTop:'3vh'}}><QuatsWrite/></Box >
+      <Box flex={4} sx={{overflowY:'scroll',maxHeight:'89.7vh','&::-webkit-scrollbar':{width:'0px'}}} color={'text.primary'}>
+       <Stack direction='column' bgcolor={'background.default'}>
+       <Box sx={{display:'flex',justifyContent:'center',marginTop:'3vh',width:'50vw'}}> 
+       <QuatsWrite miniProfiles={miniProfiles} /> 
+       </Box >
           {posts?.length > 0 ?
             posts?.map(post => (
               <Post imageURL={post.imageURL} 

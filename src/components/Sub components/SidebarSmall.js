@@ -29,6 +29,7 @@ function logout(e){
   e.preventDefault()
   userLogout().then((result)=>{
     window.localStorage.removeItem("id")
+    window.localStorage.removeItem("mode")
     setTimeout(() => {
       navigate('/')
     }, 2000);

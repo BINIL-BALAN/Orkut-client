@@ -12,7 +12,7 @@ function ReceiveMsg({message,image}) {
         padding:2
     }}>
        <Stack direction='column' sx={{display:'flex',alignItems:'top'}}>
-            <Card  sx={{ maxWidth:250,backgroundColor:'white',color:'black',marginLeft:'2.1vw'}}>
+            <Card  sx={{minWidth:90, maxWidth:250,backgroundColor:'white',color:'black',marginLeft:'2.1vw',borderRadius:'18px'}}>
                 <CardContent>
                    {message}
                 </CardContent>

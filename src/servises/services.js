@@ -71,7 +71,8 @@ export async function UnfollowRequest(requestId){
             fromId: requestedId,
             toId: requestId
       }
-      const result = await instance.post('unfollow',body)
+      return await instance.post('unfollow',body)
+
 }
 
 export async function getContacts() {

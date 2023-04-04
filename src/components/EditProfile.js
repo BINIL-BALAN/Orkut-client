@@ -1,4 +1,4 @@
-import { Box, Button, TextField, CircularProgress, Modal } from '@mui/material'
+import { Box, Button, TextField, CircularProgress, Modal, ThemeProvider } from '@mui/material'
 import { Stack } from '@mui/system'
 import React, { useState, useEffect } from 'react'
 import Sidebar from './Sub components/Sidebar'
@@ -13,6 +13,7 @@ import ProfileCard from './Sub components/ProfileCard';
 import { fetchUserDetails, updateUserDetails } from '../servises/services'
 import { useNavigate } from 'react-router-dom';
 import AlertMessages from './Sub components/AlertMessages';
+import {createTheme} from '@mui/material';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -51,8 +52,16 @@ function EditProfile() {
     const [statusMsg, setStatusMsg] = useState('')
     const [loading, setloaging] = useState(false)
     const [open, setOpen] = useState(false);
+    const [mode, setMode] = useState(window.localStorage.getItem("mode") || 'light')
+    const darkTheme = createTheme({
+        palette: {
+          mode: mode
+        }
+      })
+
     const navigate = useNavigate()
     const handleClose = () => setOpen(false);
+   
     // function to invoke image select box
     function handleSelect(e) {
         e.preventDefault()
@@ -134,17 +143,17 @@ function EditProfile() {
     }
 
     return (
-        <>
-            <Box sx={{ backgroundColor: "#F0F2F5" }}>
-                <Stack direction='row'>
-                    <Box sx={{ height: '100vh', width: '20vw' }}>
-                        <Sidebar></Sidebar>
+        <ThemeProvider theme={darkTheme}>
+            <Box bgcolor={'background.default'} color={'text.primary'}>
+                <Stack direction='row' sx={{'&::-webkit-scrollbar':{width:'0px'} }}>
+                    <Box sx={{ height: '99.7vh', width: '18vw'}}>
+                        <Sidebar mode={mode} setMode={setMode}></Sidebar>
                     </Box >
-                    <Box sx={{ width: '56.5%' }}>
+                    <Box sx={{ width: '53.1%' }}>
 
                         <Typography variant='h5' sx={{ marginTop: '1vh' }}>Edit profile</Typography>
                         <AlertMessages status={statusState} message={statusMsg} />
-                        <EditProfileBox sx={{ width: '60vw' }}>
+                        <EditProfileBox sx={{ width: '55vw' }}>
                             <ListItem alignItems="flex-start">
                                 <Stack direction='row'>
                                     <Stack direction='row' alignItems='center'>
@@ -160,7 +169,7 @@ function EditProfile() {
                             </ListItem>
 
                             <ListItem alignItems="flex-start" sx={{ marginTop: '2vh' }}>
-                                <Stack direction='row' sx={{ width: '40vw' }}>
+                                <Stack direction='row' sx={{ width: '30vw' }}>
                                     <Stack sx={{ width: '40vw' }} direction='row' alignItems='center'>
                                         <Typography sx={{ margin: "0rem 2rem", width: '8vw' }}>Location</Typography >
                                         <TextField onChange={handleUdate} name='location' value={details.location} fullWidth variant='outlined' placeholder='Location' />
@@ -237,7 +246,7 @@ function EditProfile() {
                     </Typography>
                 </Box>
             </Modal>
-        </>
+        </ThemeProvider>
     )
 }
 

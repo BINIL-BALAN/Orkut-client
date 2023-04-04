@@ -47,6 +47,7 @@ const HorizontalScroll = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   overflowX: 'scroll',
   marginRight: '1vw',
+  marginTop:'.8vh',
   '&::-webkit-scrollbar': { height: '6px' },
   '&::-webkit-scrollbar-track': { background: 'transprent' },
   '&::-webkit-scrollbar-thumb': { background: '#1976d2', borderRadius: '8px' }

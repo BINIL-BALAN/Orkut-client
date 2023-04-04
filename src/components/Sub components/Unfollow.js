@@ -5,7 +5,9 @@ function Unfollow({id,type}) {
 
   function unfollow(e){
       e.preventDefault()
-      UnfollowRequest(id)
+      UnfollowRequest(id).then((result)=>{
+        window.location.reload(true)
+      })
   }
   return (
     <Button color='error' onClick={unfollow} variant={type}>Unfollow</Button>

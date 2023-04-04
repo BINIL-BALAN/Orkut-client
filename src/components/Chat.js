@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useCallback } from 'react'
 import SidebarSmall from './Sub components/SidebarSmall'
 import { Typography, AppBar, Toolbar, Stack, Box, Avatar, Badge } from '@mui/material';
 import styled from '@emotion/styled';
@@ -45,13 +45,19 @@ function Chat() {
     getContacts().then((result) => {
       setContacts(result.data?.contacts)
       setNewMessage(result.data?.newMessage)
-      console.log('new message',result.data?.newMessage)
+      console.log('new message', result.data?.newMessage)
       setAllMessages(result.data?.allMessages)
     })
     const newSocket = io(`http://${LAN_IP}:5000/`)
     setSocket(newSocket)
     return () => newSocket.close()
   }, [setSocket])
+
+const setRef = useCallback(node =>{
+    if(node){
+      node.scrollIntoView({smooth:true})
+    }
+})
   // connecting to friend
   socket?.on('join-key', (key, connectId) => {
     if (userId === key) {
@@ -59,9 +65,15 @@ function Chat() {
     }
   })
   socket?.emit('new-messages', userId)
-  socket?.on('get-newChats', (newMsg) => {
-    console.log('new message real time', newMsg);
-    setNewMessage(newMsg)
+  socket?.on('get-newChats', (newMsg, fromId) => {
+   console.log('inside get-newChats key',key)
+    console.log('inside get-newChats fromId', fromId);
+    if(key !== undefined && fromId !== undefined){
+      if(fromId !== key){
+        console.log('contitiomn true');
+        setNewMessage(newMsg)
+      }
+    }
   })
 
   // opening connection to othe user
@@ -71,8 +83,8 @@ function Chat() {
     newMsg.splice(newMsg.indexOf(newMsg.find(user => user.id === key)), 1)
     setNewMessage(newMsg)
     setKey(key)
-    let connetId = userId + key
-    setConnectionId(connetId)
+   let connetId = userId + key
+    // setConnectionId(connetId)
     setReceiverName(image)
     socket?.emit('join', key, connetId)
     setUser(contacts.find(contact => contact.id === key));
@@ -86,7 +98,11 @@ function Chat() {
   socket?.on('receive-message', (messagebody, allchats, fromId) => {
     console.log(allchats);
     setAllMessages(allchats)
-    setChatBuffer(allchats.find(chatUser => chatUser.id === fromId).messages)
+    // console.log('key', key)
+    // console.log('fromId', fromId)
+    if (fromId !== key) {
+      setChatBuffer(allchats.find(chatUser => chatUser.id === fromId).messages)
+    }
   })
 
   //sending a message to frient
@@ -97,18 +113,23 @@ function Chat() {
       to: key,
       message: sendMsg,
     }
-    socket?.emit('send-message', messageBody, connectionId)
+    emitMessage(messageBody)
     const newMessage = {
       send: true,
       message: sendMsg
     }
     setChatBuffer([...chatsBuffer, newMessage])
   }
-
+function emitMessage(messageBody){
+  let connetId = userId + key
+  socket?.emit('send-message', messageBody, connetId)
+}
+  //assign message to state
   function handleMsg(e) {
     setSendMsg(e.target.value)
   }
 
+  //request to delete a message
   async function deleteChats(e, toid) {
     e.preventDefault()
     const allChats = await deleteAllChats(toid)
@@ -158,7 +179,7 @@ function Chat() {
 
                         <Badge badgeContent={newMessage.find(user => user.id === contact.id)?.message.length} color="primary">
                         </Badge>
-                        
+
                       </ListItemButton>
                     </ListItem>
                     <Divider variant="inset" component="li" />
@@ -199,16 +220,24 @@ function Chat() {
                     </Stack>
                   </StyledToolBar>
                 </AppBar >
+                <Box sx={{ height: '79.1vh', overflowY: 'scroll','&::-webkit-scrollbar':{width:'0px'} }}>
 
-                <Box sx={{ maxHeight: '79vh', overflowY: 'scroll', '&::-webkit-scrollbar': { width: '0px' } }}>
+                  <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'end',
+                  }}>
 
-                  {
-                    chatsBuffer?.map(chat => (
-                      <>
-                        {chat.send ? <SendMsg message={chat.message} /> : <ReceiveMsg message={chat.message} image={receiverName} />}
-                      </>
-                    ))
-                  }
+                    {
+                      chatsBuffer?.map((chat, index) =>( 
+                        <span ref={chatsBuffer.length - 1 === index ? setRef :null }>
+                          {chat.send ?
+                            <SendMsg message={chat.message} /> :
+                            <ReceiveMsg message={chat.message} image={receiverName} />}
+                        </span>
+                      ))
+                    }
+                  </Box>
                 </Box>
                 <AppBar position="fixed" sx={{ display: 'flex', width: '62.5vw', top: 'auto', bottom: 0 }}>
                   <Toolbar>

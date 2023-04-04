@@ -1,3 +1,3 @@
 export const SUCCESS = 'SUCCESS'
 export const FAIL = 'FAIL'
-export const LAN_IP = '192.168.43.127'
+export const LAN_IP = '192.168.1.33'

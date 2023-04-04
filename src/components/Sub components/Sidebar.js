@@ -1,5 +1,5 @@
 // ,borderRight:'1px solid rgba(0, 0, 0, 0.12)'
-import React from 'react'
+import React,{useState} from 'react'
 import { Box,Stack } from '@mui/system'
 import { Typography,Divider,Switch } from '@mui/material'
 import List from '@mui/material/List';
@@ -14,20 +14,34 @@ import EditIcon from '@mui/icons-material/Edit';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import PostUpload from './PostUpload';
-import { useNavigate } from 'react-router-dom';
+import { UNSAFE_DataRouterStateContext, useNavigate } from 'react-router-dom';
 import { userLogout } from '../../servises/services';
-function Sidebar() {
+import {CircularProgress} from '@mui/material';
+function Sidebar({mode,setMode}) {
   const navigate = useNavigate()
+  const [isChecked,setIsChecked] = useState(false)
+  const [loading,setLoading] = useState(false)
 function logout(e){
+  setLoading(true)
   e.preventDefault()
   userLogout().then((result)=>{
+  setTimeout(()=>{
     window.localStorage.removeItem("id")
+    window.localStorage.removeItem("mode")
+    setLoading(false)
     navigate('/')
+  },2000)
   })
+}
+
+function nightModeSetting(e){
+  e.preventDefault()
+  setIsChecked(!isChecked)
+  console.log('clicked')
 }
   return (
     <>
-      <Box sx={{display:{xs:'none',sm:'block'},position:'relative',backgroundColor:'#F0F2F5'}} p={2} flex={1}>
+      <Box sx={{display:{xs:'none',sm:'block'},position:'relative'}} p={2} flex={1} bgcolor={"background.default"} color={'text.primary'}>
         <Typography color='primary' variant='h5' component='strong'>
             <strong>Orkut</strong>
         </Typography>
@@ -76,6 +90,7 @@ function logout(e){
                   <LogoutIcon />
                 </ListItemIcon>
                 <ListItemText primary="Log out" />
+                {loading? <CircularProgress/> : ''}
               </ListItemButton>
             </ListItem>
            <Divider/>
@@ -84,7 +99,8 @@ function logout(e){
                 <ListItemIcon>
                   <NightlightIcon />
                 </ListItemIcon>
-                <Switch />
+                <Switch checked={window.localStorage.getItem('mode') === 'dark' ? true : false} onChange={e=>{setMode(mode === 'light' ? "dark" : "light");
+                 window.localStorage.setItem('mode',window.localStorage.getItem('mode') === 'light' ? 'dark' : 'light' )}}/>
               </ListItemButton>
             </ListItem>
           </List>
@@ -93,5 +109,5 @@ function logout(e){
     </>
   )
 }
-
+//setMode(mode === 'light' ? "dark" : "light")
 export default Sidebar

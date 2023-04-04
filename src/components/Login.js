@@ -74,6 +74,7 @@ function Login() {
           setStatusState(false)
           setStatusClass('')
           setStatusMsg('');
+          window.localStorage.setItem('mode','light')
           navigate('/Home')
         }, 3000)
       })
